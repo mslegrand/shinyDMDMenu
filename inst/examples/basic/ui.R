@@ -14,39 +14,39 @@ shinyUI(fluidPage(
                        menuItem("Appricot"),
                        menuItem("Bannana"),
                        menuItem("Cherry"),
-                       dropDownList(
+                       subMenu(
                          "More Fruit",
                          id='fruit',
                          menuItem("oranges"),
                          menuItem("pears")
                        ),
-                       dropDownList(
+                       subMenu(
                          "Great Men",
-                         dropDownList("China",
-                            dropDownList("Xian",
+                         subMenu("China",
+                            subMenu("Xian",
                               menuItem("First Emperor")
                             ),
-                            dropDownList("Hongkong",
+                            subMenu("Hongkong",
                               menuItem("Bruce Lee")
                             )
                          ),
-                         dropDownList("UnitedStates",
-                              dropDownList("Califoria",
+                         subMenu("UnitedStates",
+                              subMenu("Califoria",
                                 menuItem("Howard Hughes"),
                                 menuItem("Grateful Dead"),
                                 menuItem("Mickey Mouse")
                               ),
-                              dropDownList("Illinois",
+                              subMenu("Illinois",
                                 menuItem("Abe Lincoln"),
                                 menuItem("Al Capone"),
                                 menuItem("Obama")
                               )
                          ),
-                         dropDownList(
+                         subMenu(
                            "United Kingdom",
                            menuItem("Ireland"),
                            menuItem("Scotland"),
-                           dropDownList("England",
+                           subMenu("England",
                                         menuItem("Shakespear"),
                                         menuItem("Sherlock Holmes"),
                                         menuItem("Dr. Who")

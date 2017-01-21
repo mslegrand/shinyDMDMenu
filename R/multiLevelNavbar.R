@@ -91,7 +91,7 @@ dropDownListContents<-function(...){
 #' @param ... any number of menu items or dropdowns
 #' @import shiny
 #' @export
-dropDownList<-function(label,  ...){
+subMenu<-function(label,  ...){
   value=label
   tag('li', 
     list(
