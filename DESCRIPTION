@@ -1,0 +1,15 @@
+Package: shinyMultilevelMenu
+Type: Package
+Title: Multi-level Menu for Shiny
+Version: 0.2.1
+Date: 2016-03-13
+Authors@R: c(
+  person("S", "Legrand", role="cre", email="legrand@gmail.com"))
+Description: A Multi-level Menu for Shiny.
+License: MIT + file LICENSE
+Depends:
+    R (>= 3.3.2)
+Imports:
+    shiny (>= 0.14.2.9001)
+BugReports: https://github.com/slegrand/menu/issues
+RoxygenNote: 5.0.1
