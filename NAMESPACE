@@ -2,7 +2,7 @@
 
 export(dropDownList)
 export(lineDivider)
-export(lineItem)
+export(menuItem)
 export(multiLevelNavBarPage)
 export(updateMultiLevelMenu)
 import(shiny)

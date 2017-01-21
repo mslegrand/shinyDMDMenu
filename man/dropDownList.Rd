@@ -4,7 +4,7 @@
 \alias{dropDownList}
 \title{Creates a drop-down menu}
 \usage{
-dropDownList(title, ...)
+dropDownList(label, ...)
 }
 \arguments{
 \item{...}{any number of menu items or dropdowns}

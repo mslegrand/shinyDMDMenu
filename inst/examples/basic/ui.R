@@ -11,47 +11,47 @@ library(shinyMultilevelMenu)
 shinyUI(fluidPage(
   multiLevelNavBarPage(
                        id='mytop',
-                       lineItem("Appricot"),
-                       lineItem("Bannana"),
-                       lineItem("Cherry"),
+                       menuItem("Appricot"),
+                       menuItem("Bannana"),
+                       menuItem("Cherry"),
                        dropDownList(
                          "More Fruit",
                          id='fruit',
-                         lineItem("oranges"),
-                         lineItem("pears")
+                         menuItem("oranges"),
+                         menuItem("pears")
                        ),
                        dropDownList(
                          "Great Men",
                          dropDownList("China",
                             dropDownList("Xian",
-                              lineItem("First Emperor")
+                              menuItem("First Emperor")
                             ),
                             dropDownList("Hongkong",
-                              lineItem("Bruce Lee")
+                              menuItem("Bruce Lee")
                             )
                          ),
                          dropDownList("UnitedStates",
                               dropDownList("Califoria",
-                                lineItem("Howard Hughes"),
-                                lineItem("Grateful Dead"),
-                                lineItem("Mickey Mouse")
+                                menuItem("Howard Hughes"),
+                                menuItem("Grateful Dead"),
+                                menuItem("Mickey Mouse")
                               ),
                               dropDownList("Illinois",
-                                lineItem("Abe Lincoln"),
-                                lineItem("Al Capone"),
-                                lineItem("Obama")
+                                menuItem("Abe Lincoln"),
+                                menuItem("Al Capone"),
+                                menuItem("Obama")
                               )
                          ),
                          dropDownList(
                            "United Kingdom",
-                           lineItem("Ireland"),
-                           lineItem("Scotland"),
+                           menuItem("Ireland"),
+                           menuItem("Scotland"),
                            dropDownList("England",
-                                        lineItem("Shakespear"),
-                                        lineItem("Sherlock Holmes"),
-                                        lineItem("Dr. Who")
+                                        menuItem("Shakespear"),
+                                        menuItem("Sherlock Holmes"),
+                                        menuItem("Dr. Who")
                            ),
-                           lineItem("Wales")
+                           menuItem("Wales")
                          )
                        )#,selectInput("sel","select",choices=letters)
   ),

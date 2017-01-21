@@ -46,31 +46,31 @@ lineDivider<-function(){
 
 #' Creates a menu action item
 #' 
-#' @param title the displayed label for the menu item
+#' @param label the displayed label for the menu item
 #' @param value return value upon clicking
 #' @import shiny
 #' @export
-lineItem<-function(  title, value=title ){  
+menuItem<-function(  label, value=label ){  
   href='#'
-  if(missing(title)){
-    stop("title not provided")
+  if(missing(label)){
+    stop("label not provided")
   }
   if(missing(value)){
-    value=title
+    value=label
   }
   
   tag('li', 
     list(a(href=href, id=gid(), "value"=value,
-           class='menuActionItem', title))
+           class='menuActionItem', label))
   )
 } 
 
-dropDownListTitle<-function(title){
+dropDownListlabel<-function(label){
   a(href='#',  id=gid(),
     class="dropdown-toggle mm-dropdown-toggle",
     "data-toggle"="dropdown",
-    value=title,
-    title,
+    value=label,
+    label,
     tag('b', list(class='caret'))
   )
 }
@@ -91,14 +91,14 @@ dropDownListContents<-function(...){
 #' @param ... any number of menu items or dropdowns
 #' @import shiny
 #' @export
-dropDownList<-function(title,  ...){
-  value=title
+dropDownList<-function(label,  ...){
+  value=label
   tag('li', 
     list(
       id=gid(),
       class="drop-down-list",
       value=value,
-      dropDownListTitle(title),
+      dropDownListlabel(label),
       dropDownListContents(...) 
     )
   )
