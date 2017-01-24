@@ -84,11 +84,16 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value)
   var srchStr="";
   
+  //console.log(JSON.stringify(data));
+  
   if(type=='dropDown'){
     scrhStr="a.dropdown-toggle[value='" + targetItem + "']";
   }
   if(type=='actionItem'){
     scrhStr=".menuActionItem[value='" + targetItem + "']";
+  }
+  if(type=='dropDownList'){
+    srchStr="li.drop-down-list[value='"+targetItem+"']"+">.dropdown-menu";
   }
   
   if(cmd=="disable" && type=='actionItem'){
@@ -154,6 +159,24 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
+  //console.log('cmd='+ cmd +"; type=" + type);
+  if(cmd=="add" && type=='dropDownList'){
+    if(data.param) {
+      var label=data.param.label, 
+      gid=data.param.gid, 
+      key=data.param.value;
+      
+      var $newEle=$("<li><a href='#' value='" + key +"' aid='"
+        + id +"' id='"+ gid +"' class='menuActionItem' " +
+        ">" + label+"</a></li>");
+      $el.find(srchStr).append($newEle);
+      $el.find(".menuActionItem[value='" + key + "']").each( function(){
+        $(this).on('click',function(evt){ 
+          $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")]); 
+        });
+      });
+    }
+  }
 }); //End Messagehadler
 
 

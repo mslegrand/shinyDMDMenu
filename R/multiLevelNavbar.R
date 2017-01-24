@@ -109,6 +109,7 @@ subMenu<-function(label,  ...){
 #' @param title (optional)
 #' @param ... any number of menu items or dropdowns
 #' @param id the id to be associated with this menubar
+#' @param theme the name of a shiny bootstrap theme. (requires shinythemes package)
 #' @import shiny
 #' @export
 multiLevelNavBarPage<-function(  ..., title="", id=NULL, theme=NULL){

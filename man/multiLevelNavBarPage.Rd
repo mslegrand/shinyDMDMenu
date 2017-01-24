@@ -4,7 +4,7 @@
 \alias{multiLevelNavBarPage}
 \title{Creates the top level menu bar}
 \usage{
-multiLevelNavBarPage(..., title = "", id = NULL)
+multiLevelNavBarPage(..., title = "", id = NULL, theme = NULL)
 }
 \arguments{
 \item{...}{any number of menu items or dropdowns}
@@ -12,6 +12,8 @@ multiLevelNavBarPage(..., title = "", id = NULL)
 \item{title}{(optional)}
 
 \item{id}{the id to be associated with this menubar}
+
+\item{theme}{the name of a shiny bootstrap theme. (requires shinythemes package)}
 }
 \description{
 Creates the top level menu bar
