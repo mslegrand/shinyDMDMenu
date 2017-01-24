@@ -108,6 +108,22 @@ addMenuItem<-function(session, menuBarId, parent, label, value=label){
   )
 }
 
+#' removes a  menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param value the return value when this item is clicked
+#' @import shiny
+#' @export
+removeMenuItem<-function(session, menuBarId,  value){
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="delete",
+                       targetItem=value,
+                       type= "actionItem"
+  )
+}
+
 #removeSubMenu<-function(session, menuBarId, parent){}
 
 

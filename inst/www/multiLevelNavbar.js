@@ -4,7 +4,6 @@
 
 var initializeMenu = function(){
   var pid;
-
   //.navbar is top level, a.dropdown-toggle are subsequent levels
   $('.mm-menubar a.mm-dropdown-toggle').on('click', function(e) {
         var $el2 = $(this);
@@ -34,7 +33,7 @@ var initializeMenu = function(){
 };
 
 $(document).ready(function(){
-  initializeMenu("mytop");
+  initializeMenu();
 });
     
 var mmbarBinding = new Shiny.InputBinding();
@@ -84,53 +83,53 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value)
   var srchStr="";
   
-  //console.log(JSON.stringify(data));
+  console.log(JSON.stringify(data));
   
   if(type=='dropDown'){
-    scrhStr="a.dropdown-toggle[value='" + targetItem + "']";
+    srchStr="a.dropdown-toggle[value='" + targetItem + "']";
   }
   if(type=='actionItem'){
-    scrhStr=".menuActionItem[value='" + targetItem + "']";
+    srchStr=".menuActionItem[value='" + targetItem + "']";
   }
   if(type=='dropDownList'){
     srchStr="li.drop-down-list[value='"+targetItem+"']"+">.dropdown-menu";
   }
   
   if(cmd=="disable" && type=='actionItem'){
-    if( ! $el.find(scrhStr).hasClass("disabled") ){
+    if( ! $el.find(srchStr).hasClass("disabled") ){
       //console.log( "disabling");
-      $el.find(scrhStr).prop("disabled", true);
-      $el.find(scrhStr).addClass("disabled");
-      $el.find(scrhStr).off("click");
+      $el.find(srchStr).prop("disabled", true);
+      $el.find(srchStr).addClass("disabled");
+      $el.find(srchStr).off("click");
     }
   }
   
   if(cmd=="enable" && type=='actionItem'){
-    if( $el.find(scrhStr).hasClass("disabled") ){
+    if( $el.find(srchStr).hasClass("disabled") ){
       //console.log( "enabling");
-      $el.find(scrhStr).prop("disabled", false);
-      $el.find(scrhStr).removeClass("disabled");
-      $el.find(scrhStr).on('click',function(evt){ 
+      $el.find(srchStr).prop("disabled", false);
+      $el.find(srchStr).removeClass("disabled");
+      $el.find(srchStr).on('click',function(evt){ 
             $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
       });
     }
   }
   
   if(cmd=="disable" && type=='dropDown'){
-    if( ! $el.find(scrhStr).parent("li").hasClass("disabled") ){
-      $el.find(scrhStr).off('click');
-      $el.find(scrhStr).prop("disabled", true);
-      $el.find(scrhStr).parent("li").addClass("disabled");
+    if( ! $el.find(srchStr).parent("li").hasClass("disabled") ){
+      $el.find(srchStr).off('click');
+      $el.find(srchStr).prop("disabled", true);
+      $el.find(srchStr).parent("li").addClass("disabled");
       
     }
   }
   
   if(cmd=="enable" && type=='dropDown'){
-    if( $el.find(scrhStr).parent("li").hasClass("disabled") ){
+    if( $el.find(srchStr).parent("li").hasClass("disabled") ){
       
-      $el.find(scrhStr).prop("disabled", false);
-      $el.find(scrhStr).parent("li").removeClass("disabled");
-      $el.find(scrhStr).on('click',function(evt) {
+      $el.find(srchStr).prop("disabled", false);
+      $el.find(srchStr).parent("li").removeClass("disabled");
+      $el.find(srchStr).on('click',function(evt) {
           var $el = $(this);
           var $parent = $(this).offsetParent(".dropdown-menu");
           $(this).parent("li").toggleClass('open');
@@ -147,15 +146,15 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   if(cmd=="rename" && type=='actionItem'){
     if(data.param && data.param.length>1) {
       //console.log(data.param[0]);
-      $el.find(scrhStr).text(data.param[0]);
-      $el.find(scrhStr).attr("value", data.param[1]);
+      $el.find(srchStr).text(data.param[0]);
+      $el.find(srchStr).attr("value", data.param[1]);
     }
   }
   
   if(cmd=="rename" && type=='dropDown'){
     if(data.param){
-      $el.find(scrhStr).text(data.param[0]);
-      $el.find(scrhStr).attr("value", data.param[1]);
+      $el.find(srchStr).text(data.param[0]);
+      $el.find(srchStr).attr("value", data.param[1]);
     }
   }
   
@@ -177,6 +176,29 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
       });
     }
   }
+  
+  if(cmd=="delete" && type=='actionItem'){
+    console.log(srchStr);
+    console.log($el.find(srchStr).parent());
+      $el.find(srchStr).parent().empty();
+
+  }
+  
+  if(cmd=="insert" && type=='dropDownList'){
+    if(data.param) {
+      
+      var $newEle=param$tree
+      $el.find(srchStr).append($newEle);
+      
+      $el.find(".menuActionItem[value='" + key + "']").each( function(){
+        $(this).on('click',function(evt){ 
+          $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")]); 
+        });
+      });
+    }
+  }
+  
+  
 }); //End Messagehadler
 
 
