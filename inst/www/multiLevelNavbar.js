@@ -141,7 +141,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   
   if(cmd=="rename" && type=='actionItem'){
     if(data.param && data.param.length>1) {
-      console.log(data.param[0]);
+      //console.log(data.param[0]);
       $el.find(scrhStr).text(data.param[0]);
       $el.find(scrhStr).attr("value", data.param[1]);
     }

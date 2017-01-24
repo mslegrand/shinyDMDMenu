@@ -15,7 +15,7 @@ newIdGen<-function(prefix="ML"){ #may remove this in the future
 gid<-newIdGen()
 
 
-mmHeader<-function(navBarBrand=""){
+mmHeader<-function(title=""){
   div(
     class="navbar-header",
     tag("button", 
@@ -30,8 +30,8 @@ mmHeader<-function(navBarBrand=""){
           span(class='icon-bar')
         )
     ),
-    if(navBarBrand!="")
-      a( class='navbar-brand', href="#",navBarBrand)
+    if(title!="")
+      a( class='navbar-brand', href="#",title)
   )  
 }
 
@@ -106,14 +106,35 @@ subMenu<-function(label,  ...){
 
 #' Creates the top level menu bar
 #' 
-#' @param navBarBrand (optional)
+#' @param title (optional)
 #' @param ... any number of menu items or dropdowns
 #' @param id the id to be associated with this menubar
 #' @import shiny
 #' @export
-multiLevelNavBarPage<-function(  ..., navBarBrand="", id=NULL){
+multiLevelNavBarPage<-function(  ..., title="", id=NULL, theme=NULL){
   if(is.null(id)){
     stop("id should not be null")
+  }
+  themeStyle<-NULL
+  if(!is.null(theme)){
+    tryCatch({
+      library(shinythemes)
+      theme<-shinytheme(theme)
+      directoryPath = system.file('',package='shinythemes')
+      fileName<-paste0(directoryPath, theme)
+      scan(file=fileName, character(), quote="", quiet = TRUE)->tmp
+      srch<-"^.dropdown-menu>.active>a:focus"
+      grep(srch,tmp)->indx
+      themeStyle<-tmp[indx] #returns 2 lines for default and inverse
+      themeStyle<-sapply(str_split(themeStyle,">a"), function(x)x[2])
+      themeStyle<-themeStyle[1]
+      themeStyle<-paste0(".nav .open>a, .nav .open >a:hover, .nav .open >a",themeStyle,collapse="\n")
+    }, 
+    error=function(e){
+      print(e)
+      stopApp()
+    }
+    )
   }
   #print(paste("id=",id))
   pid=id
@@ -130,14 +151,20 @@ multiLevelNavBarPage<-function(  ..., navBarBrand="", id=NULL){
     )  
   }
   
-  tagList(  
+  tagList(   
     singleton(tags$head(
       initResourcePaths(),
       tags$script(src = "https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"),
       tags$script(src = "https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"),
       tags$script(src = "multilevelMenu/multiLevelNavbar.js"),
+      if (!is.null(theme)) {
+        tags$head(tags$link(rel = "stylesheet", type = "text/css", href = theme))
+      },
+      if (!is.null(themeStyle)) {
+        tags$head(tags$style(HTML(themeStyle)))
+      }, 
       tags$link(rel = "stylesheet", type = "text/css", href ="multilevelMenu/multiLevelNavbar.css" )
-    )),
+    )), 
     div(
       id=id,
       class="mm-menubar navbar navbar-default navbar-fixed-top",
@@ -147,7 +174,7 @@ multiLevelNavBarPage<-function(  ..., navBarBrand="", id=NULL){
       requestor="NULL",
       div(
         class= 'row text-nowrap', #'row', #'container'
-        mmHeader(navBarBrand),
+        mmHeader(title),
         mmCollapse(pid=id, ...)
       )
     ) #,
@@ -155,6 +182,8 @@ multiLevelNavBarPage<-function(  ..., navBarBrand="", id=NULL){
     # tags$script(type="text/javascript", HTML(js))
   )
 }
+
+
 
 
 

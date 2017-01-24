@@ -4,12 +4,12 @@
 \alias{multiLevelNavBarPage}
 \title{Creates the top level menu bar}
 \usage{
-multiLevelNavBarPage(..., navBarBrand = "", id = NULL)
+multiLevelNavBarPage(..., title = "", id = NULL)
 }
 \arguments{
 \item{...}{any number of menu items or dropdowns}
 
-\item{navBarBrand}{(optional)}
+\item{title}{(optional)}
 
 \item{id}{the id to be associated with this menubar}
 }
