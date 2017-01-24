@@ -22,22 +22,58 @@ updateMultiLevelMenu<-function(session, menuBarId, command, targetItem, type, ..
   session$sendCustomMessage("multiLevelMenuBar", theList)
 }
 
+#' Disable a menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param item the identifier(value) of the item to be diabled
+#' @import shiny
+#' @export
 disableMenuItem<-function(session, menuBarId, item){
   updateMultiLevelMenu(session, menuBarId, item, "actionItem")
 }
 
-disableMenuDropdown<-function(session, menuBarId, item){
-  updateMultiLevelMenu(session, menuBarId, item, "dropDown")
+#' Disable a dropdown
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param dropdown the identifier(value) of the dropdownto be diabled
+#' @import shiny
+#' @export
+disableMenuDropdown<-function(session, menuBarId, dropdown){
+  updateMultiLevelMenu(session, menuBarId, dropdown, "dropDown")
 }
 
+#' Enable a menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param item the identifier(value) of the item to be enabled
+#' @import shiny
+#' @export
 enableMenuItem<-function(session, menuBarId, item){
   updateMultiLevelMenu(session, menuBarId, item, "actionItem")
 }
 
-enableMenuDropdown<-function(session, menuBarId, item){
+#' Enable a dropdown
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param dropdown the identifier(value) of the dropdownto be enabled
+#' @import shiny
+#' @export
+enableMenuDropdown<-function(session, menuBarId, dropdown){
   updateMultiLevelMenu(session, menuBarId, item, "dropDown")
 }
 
+#' Rename a menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param item the identifier(value) of the item to be renamed
+#' @param newLabel the new name
+#' @import shiny
+#' @export
 renameMenuItem<-function(session, menuBarId, item, newLabel ){
   updateMultiLevelMenu(session, menuBarId, item, "actionItem", param=c(newLabel, newLabel))
 }
@@ -49,7 +85,28 @@ renameMenuDropdow<-function(session, menuBarId, item, newLabel ){
 
 #To do-------------Dynamicalls Add/Remove to the menu-----------------
 
-#addSubMenu<-function(session, menuBarId, parent, submenu){}
+#' Add a new menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param label the label of the new menu item
+#' @param value the return value when this item is clicked
+#' @import shiny
+#' @export
+addMenuItem<-function(session, menuBarId, parent, label, value=label){
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="add",
+                       targetItem=parent,
+                       type= "dropDownList", 
+                       param=list(
+                         label=label,
+                         value=value,
+                         gid=gid()
+                      )
+  )
+}
 
 #removeSubMenu<-function(session, menuBarId, parent){}
 
