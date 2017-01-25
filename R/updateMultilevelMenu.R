@@ -126,4 +126,31 @@ removeMenuItem<-function(session, menuBarId,  value){
 
 #removeSubMenu<-function(session, menuBarId, parent){}
 
+#todo add item for topnav bar (currently adds on targetItem which is a dropdown)
+#additem2bar<-function(){
+
+#' Add a new menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+addSubMenu<-function(session, menuBarId,  parent, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  print(nid)
+  print(submenu)
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="addSubmenu",
+                       targetItem=parent,
+                       type= "dropDownList", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
 
