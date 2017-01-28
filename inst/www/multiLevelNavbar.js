@@ -33,33 +33,6 @@ var initializeMenu = function(){
    //getStyleRuleValue("backgroundColor", ".nav");
 };
 
-
-//pid is the menu id
-// searchStr points to the node of the newly created submenu
-var initializeSubMenu = function(pid, searchStr){
-  //.navbar is top level, a.dropdown-toggle are subsequent levels
-  $(searchStr).find('a.mm-dropdown-toggle').each( function(){
-    $(this).on('click', function(e) {
-        var $el2 = $(this);
-        var $parent = $(this).offsetParent(".dropdown-menu");
-        $(this).parent("li").toggleClass('open');
-        if(!$parent.parent().hasClass('nav')) {
-          $el2.next().css({"top": $el2[0].offsetTop, "left": $parent.outerWidth() - 4});
-        }
-        $('.nav li.open').not($(this).parents("li")).removeClass("open");
-        return false;
-    });
-  });
-  //add trigger to send message from child menuActionItem
-  $(searchStr).find.find(".menuActionItem").each( function(){
-     $(this).attr("aid",pid);
-      $(this).on('click',function(evt){ 
-        $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
-      });
-  });
-};
-
-
 $(document).ready(function(){
   initializeMenu();
 });
