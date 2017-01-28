@@ -118,40 +118,6 @@ multiLevelNavBarPage<-function(..., title="", id=NULL, theme=NULL){
   if(is.null(id)){
     stop("id should not be null")
   }
-  # themeStyle<-NULL
-  # if(!is.null(theme)){
-  #   tryCatch({
-  #    
-  #     if(file.exists(theme)){
-  #       scan(file=theme, character(), quote="", quiet = TRUE)->tmp
-  #       fileName=theme
-  #     } else {
-  #       parts<-strsplit(theme,"/")[[1]]
-  #       prefix<-parts[1]
-  #       suffix<-paste(parts[-1], collapse="/")
-  #       directoryPath<-shiny:::.globals$resources[[prefix]]$directoryPath
-  #       fileName<-paste(directoryPath,suffix,sep="/")
-  #     }
-      # scan(file=theme, character(), quote="", quiet = TRUE)->tmp0
-      # print(is.null(tmp0))
-      # directoryPath = system.file('',package='shinythemes')
-      # fileName<-paste0(directoryPath, theme)
-      
-      # scan(file=fileName, character(), quote="", quiet = TRUE)->tmp
-      # srch<-"^.dropdown-menu>.active>a:focus"
-      # grep(srch,tmp)->indx
-      # themeStyle<-tmp[indx] #returns 2 lines for default and inverse
-      # themeStyle<-sapply(str_split(themeStyle,">a"), function(x)x[2])
-      # themeStyle<-themeStyle[1]
-      # themeStyle<-paste0(".nav .open>a, .nav .open >a:hover, .nav .open >a",themeStyle,collapse="\n")
-    #}, 
-    # error=function(e){
-    #   print(e)
-    #   stopApp()
-    # }
-    # )
-  #}
-  
   pid=id
   mmCollapse<-function(pid,...){
     div(
@@ -175,9 +141,6 @@ multiLevelNavBarPage<-function(..., title="", id=NULL, theme=NULL){
         tags$head(tags$link(rel = "stylesheet", type = "text/css", href = theme))
       },
       tags$script(src = "multilevelMenu/multiLevelNavbar.js"),
-      # if (!is.null(themeStyle)) {
-      #   tags$head(tags$style(HTML(themeStyle)))
-      # }, 
       tags$link(rel = "stylesheet", type = "text/css", href ="multilevelMenu/multiLevelNavbar.css" )
     )), 
     div(
