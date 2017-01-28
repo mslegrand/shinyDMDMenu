@@ -30,7 +30,6 @@ var initializeMenu = function(){
         });
     });
   });
-   //getStyleRuleValue("backgroundColor", ".nav");
 };
 
 $(document).ready(function(){
@@ -173,11 +172,11 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value)
   var srchStr="";
   
-  console.log(JSON.stringify(data));
+  //console.log(JSON.stringify(data));
   //pid is the menu id
 // searchStr points to the node of the newly created submenu
 
-  if(type=='dropDown'){
+  if(type=='dropDown'){ //applies to rename, disable/enable
     srchStr="a.dropdown-toggle[value='" + targetItem + "']";
   }
   if(type=='actionItem'){
@@ -186,6 +185,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   if(type=='dropDownList'){
     srchStr="li.drop-down-list[value='"+targetItem+"']"+">.dropdown-menu";
   }
+  
   
   if(cmd=="disable" && type=='actionItem'){
     if( ! $el.find(srchStr).hasClass("disabled") ){
@@ -212,7 +212,6 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
       $el.find(srchStr).off('click');
       $el.find(srchStr).prop("disabled", true);
       $el.find(srchStr).parent("li").addClass("disabled");
-      
     }
   }
   
