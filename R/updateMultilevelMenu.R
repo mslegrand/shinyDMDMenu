@@ -78,7 +78,15 @@ renameMenuItem<-function(session, menuBarId, item, newLabel ){
   updateMultiLevelMenu(session, menuBarId, item, "actionItem", param=c(newLabel, newLabel))
 }
 
-renameMenuDropdow<-function(session, menuBarId, item, newLabel ){
+#' Rename a menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param item the identifier(value) of the item to be renamed
+#' @param newLabel the new name
+#' @import shiny
+#' @export
+renameMenuDropdown<-function(session, menuBarId, dropDown, newLabel ){
   updateMultiLevelMenu(session, menuBarId, item, "dropdown", param=c(newLabel, newLabel))
 }
 
@@ -140,8 +148,6 @@ removeMenuItem<-function(session, menuBarId,  value){
 #' @export
 addSubMenu<-function(session, menuBarId,  parent, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  print(nid)
-  print(submenu)
   updateMultiLevelMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="addSubmenu",
