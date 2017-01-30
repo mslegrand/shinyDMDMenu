@@ -5,8 +5,8 @@
 #' @param session the session 
 #' @param menuBarId the id of the menubar to be updated
 #' @param command one of c('disable','enable', 'rename')
-#' @param targetItem the identifier(value) of dropDown/selection 
-#' @type one of c('actionItem', 'dropDown')
+#' @param targetItem the identifier(value) of dropdown/selection 
+#' @type one of c('actionItem', 'dropdown')
 #' @import shiny
 #' @export
 updateMultiLevelMenu<-function(session, menuBarId, command, targetItem, type, ...){
@@ -63,7 +63,7 @@ enableMenuItem<-function(session, menuBarId, item){
 #' @import shiny
 #' @export
 enableMenuDropdown<-function(session, menuBarId, dropdown){
-  updateMultiLevelMenu(session, menuBarId, item, "dropDown")
+  updateMultiLevelMenu(session, menuBarId, item, "dropdown")
 }
 
 #' Rename a menu item
@@ -86,7 +86,7 @@ renameMenuItem<-function(session, menuBarId, item, newLabel ){
 #' @param newLabel the new name
 #' @import shiny
 #' @export
-renameMenuDropdown<-function(session, menuBarId, dropDown, newLabel ){
+renameMenuDropdown<-function(session, menuBarId, dropdown, newLabel ){
   updateMultiLevelMenu(session, menuBarId, item, "dropdown", param=c(newLabel, newLabel))
 }
 
@@ -107,7 +107,7 @@ addMenuItem<-function(session, menuBarId, parent, label, value=label){
                        menuBarId=menuBarId, 
                        command="add",
                        targetItem=parent,
-                       type= "dropDownList", 
+                       type= "dropdownList", 
                        param=list(
                          label=label,
                          value=value,
@@ -141,22 +141,140 @@ removeMenuItem<-function(session, menuBarId,  value){
 #' 
 #' @param session the session 
 #' @param menuBarId the id of the menubar to be updated
-#' @param parent the identifier(value) of the parent (dropdown)
+#' @param dropdown the value that was assigned to the dropdown
 #' @param submenu  the new menu entries
 #' 
 #' @import shiny
 #' @export
-addSubMenu<-function(session, menuBarId,  parent, submenu){
+addSubMenu<-function(session, menuBarId,  dropdown, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateMultiLevelMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="addSubmenu",
-                       targetItem=parent,
-                       type= "dropDownList", 
+                       targetItem=dropdown,
+                       type= "dropdownList", 
                        param=list(
                          submenu=paste(submenu, collapse=" "),
                          nid=nid
                        )
   )
 }
+
+
+#' Add a new item/submenu before given entry
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+insertBeforeMenuItem<-function(session, menuBarId,  entry, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="before",
+                       targetItem=entry,
+                       type= "actionItem", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
+
+#' Add a new item/submenu before given entry
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+insertBeforeMenuItem<-function(session, menuBarId,  entry, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="before",
+                       targetItem=entry,
+                       type= "actionItem", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
+
+#' Add a new item/submenu before given entry
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+insertAfterMenuItem<-function(session, menuBarId,  entry, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="after",
+                       targetItem=entry,
+                       type= "actionItem", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
+
+#' Add a new item/submenu before given entry
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+insertBeforeDropdown<-function(session, menuBarId,  entry, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="before",
+                       targetItem=entry,
+                       type= "dropdown", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
+
+
+#' Add a new item/submenu after given entry
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param parent the identifier(value) of the parent (dropdown)
+#' @param submenu  the new menu entries
+#' 
+#' @import shiny
+#' @export
+insertAfterDropdown<-function(session, menuBarId,  entry, submenu){
+  nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="after",
+                       targetItem=entry,
+                       type= "dropdown", 
+                       param=list(
+                         submenu=paste(submenu, collapse=" "),
+                         nid=nid
+                       )
+  )
+}
+
 

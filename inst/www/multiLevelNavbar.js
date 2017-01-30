@@ -48,7 +48,7 @@ $.extend(mmbarBinding, {
     return(value);
   },
   setValue: function(el, value) {
-    //Not sure if setting the value makes sense
+    //
   },
   
   subscribe: function(el, callback) {
@@ -147,13 +147,14 @@ MultiLevelMenu=(function(){ // open object here
       });
     });
     //add trigger to send message from child menuActionItem
-    $(searchStr).find(".menuActionItem").each( function(){
+    $(searchStr).parent().find(".menuActionItem").each( function(){
        $(this).attr("aid",pid);
         $(this).on('click',function(evt){ 
           $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
         });
     });
   };
+  
   
   return{
     initSubMenu: initializeSubMenu,
@@ -169,20 +170,21 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   
   var type =data.type;
   var targetItem = data.targetItem; // values of the items
-  var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value)
+  var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value),
   var srchStr="";
+  var nid=null;
   
   //console.log(JSON.stringify(data));
   //pid is the menu id
 // searchStr points to the node of the newly created submenu
 
-  if(type=='dropDown'){ //applies to rename, disable/enable
+  if(type=='dropdown'){ //applies to rename, disable/enable
     srchStr="a.dropdown-toggle[value='" + targetItem + "']";
   }
   if(type=='actionItem'){
     srchStr=".menuActionItem[value='" + targetItem + "']";
   }
-  if(type=='dropDownList'){
+  if(type=='dropdownList'){ // used to append submenu to dropdown
     srchStr="li.drop-down-list[value='"+targetItem+"']"+">.dropdown-menu";
   }
   
@@ -207,7 +209,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
-  if(cmd=="disable" && type=='dropDown'){
+  if(cmd=="disable" && type=='dropdown'){
     if( ! $el.find(srchStr).parent("li").hasClass("disabled") ){
       $el.find(srchStr).off('click');
       $el.find(srchStr).prop("disabled", true);
@@ -215,9 +217,8 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
-  if(cmd=="enable" && type=='dropDown'){
+  if(cmd=="enable" && type=='dropdown'){
     if( $el.find(srchStr).parent("li").hasClass("disabled") ){
-      
       $el.find(srchStr).prop("disabled", false);
       $el.find(srchStr).parent("li").removeClass("disabled");
       $el.find(srchStr).on('click',function(evt) {
@@ -233,7 +234,6 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
-  
   if(cmd=="rename" && type=='actionItem'){
     if(data.param && data.param.length>1) {
       //console.log(data.param[0]);
@@ -242,15 +242,15 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
-  if(cmd=="rename" && type=='dropDown'){
-    if(data.param){
+  if(cmd=="rename" && type=='dropdown'){
+    if(data.param && data.param.length>1) {
       $el.find(srchStr).text(data.param[0]);
       $el.find(srchStr).attr("value", data.param[1]);
     }
   }
   
   //console.log('cmd='+ cmd +"; type=" + type);
-  if(cmd=="add" && type=='dropDownList'){
+  if(cmd=="add" && type=='dropdownList'){
     if(data.param) {
       var label=data.param.label, 
       gid=data.param.gid, 
@@ -268,25 +268,47 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
     }
   }
   
-  if(cmd=="delete" && type=='actionItem'){
+  if(cmd=="delete" && ( type=='actionItem' || type=='dropdown')){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
-      $el.find(srchStr).parent().empty();
-
+    $el.find(srchStr).parent().empty();
   }
   
-  //need to add submenu
-  if(cmd=="addSubmenu" && type=='dropDownList'){
+  if(cmd=="after" && ( type=='actionItem' || type=='dropdown')){
+    //console.log(srchStr);
+    //console.log($el.find(srchStr).parent());
     if(data.param) {
-      var nid = '#' + data.param.nid;
-      //console.log(nid);
-      //console.log(data.param.submenu)
-      $el.find(srchStr).append( $("" + data.param.submenu));
-      //now need to fix submenu to be used
-      // what is the search path for $newEle?, what is the id of
+      nid = '#' + data.param.nid;
+      $el.find(srchStr).parent().after( $("" + data.param.submenu));
       MultiLevelMenu.initSubMenu(id, nid);
     }
   }
+  
+  if(cmd=="before" && ( type=='actionItem' || type=='dropdown')){
+    console.log(type)
+    console.log(srchStr);
+    console.log('parent')
+    console.log($el.find(srchStr).parent());
+    if(data.param) {
+      nid = '#' + data.param.nid;
+      $el.find(srchStr).parent().before( $("" + data.param.submenu));
+      
+      MultiLevelMenu.initSubMenu(id, nid);
+    }
+  }
+
+  
+  //need to add submenu
+  if(cmd=="addSubmenu" && type=='dropdownList'){
+    if(data.param) {
+      nid = '#' + data.param.nid;
+      console.log(nid)
+      $el.find(srchStr).append( $("" + data.param.submenu));
+      MultiLevelMenu.initSubMenu(id, nid);
+    }
+  }
+  
+ 
 }); //End Messagehadler
 
 

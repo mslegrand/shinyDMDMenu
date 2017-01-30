@@ -61,16 +61,16 @@ menuItem<-function(  label, value=label ){
   }
   
   tag('li', 
-    list(a(href=href, id=gid(), "value"=value,
+    list(a(href=href, id=gid(), value=value,
            class='menuActionItem', label))
   )
 } 
 
-dropDownListlabel<-function(label){
+dropDownListlabel<-function(label){ ### !!! should we allow a value or id specification?
   a(href='#',  id=gid(),
     class="dropdown-toggle mm-dropdown-toggle",
     "data-toggle"="dropdown",
-    value=label,
+    value=label, 
     label,
     tag('b', list(class='caret'))
   )
@@ -86,14 +86,14 @@ dropDownListContents<-function(...){
   )
 }
 
-#' Creates a drop-down menu
+#' Create a drop-down menu
 #' 
-#' @param the label of the drop down
+#' @param label the label of the drop down
 #' @param ... any number of menu items or dropdowns
 #' @import shiny
 #' @export
-subMenu<-function(label,  ...){
-  value=label
+subMenu<-function(label,  ...){ ### !!! should we allow a value or id specification?
+  value=label ### !!! should we allow a value or id specification?
   tag('li', 
     list(
       id=gid(),
@@ -107,12 +107,11 @@ subMenu<-function(label,  ...){
 
 #' Creates the top level menu bar
 #' 
-#' @param title (optional)
+#' @param title (optional) the title of the menubar
 #' @param ... any number of menu items or dropdowns
 #' @param id the id to be associated with this menubar
 #' @param theme the name of a shiny bootstrap theme. (requires shinythemes package)
 #' @import shiny
-#' @import stringr
 #' @export
 multiLevelNavBarPage<-function(..., title="", id=NULL, theme=NULL){
   if(is.null(id)){
