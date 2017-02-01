@@ -8,7 +8,8 @@ Authors@R: c(
 Description: Dynamic Multi-level Dropdown Menu for Shiny.
 License: MIT + file LICENSE
 Depends:
-    R (>= 3.3.2)
+    R (>= 3.3.2),
+    stringr (>= 1.1.0)
 Imports:
     shiny (>= 0.14.2.9001)
 BugReports: https://github.com/slegrand/menu/issues
