@@ -1,12 +1,23 @@
 #--------------updates------------------------------------
 
+#' dirty the menu 
+#' 
+#' @param session the session
+#' @param menuBarId the id of the menubar to be reset
+#' @import shiny
+#' @export
+dirtyMenu<-function(session, menuBarId){
+  message<-list(reset="true")
+  session$sendInputMessage(menuBarId, message)
+}
+
 #' Update the Menu
 #' 
 #' @param session the session 
 #' @param menuBarId the id of the menubar to be updated
 #' @param command one of c('disable','enable', 'rename')
 #' @param targetItem the identifier(value) of dropdown/selection 
-#' @type one of c('actionItem', 'dropdown')
+#' @param type one of c('actionItem', 'dropdown')
 #' @import shiny
 #' @export
 updateMultiLevelMenu<-function(session, menuBarId, command, targetItem, type, ...){
@@ -30,7 +41,7 @@ updateMultiLevelMenu<-function(session, menuBarId, command, targetItem, type, ..
 #' @import shiny
 #' @export
 disableMenuItem<-function(session, menuBarId, item){
-  updateMultiLevelMenu(session, menuBarId, item, "actionItem")
+  updateMultiLevelMenu(session, menuBarId, "disable", item, "actionItem")
 }
 
 #' Disable a dropdown
@@ -41,7 +52,7 @@ disableMenuItem<-function(session, menuBarId, item){
 #' @import shiny
 #' @export
 disableMenuDropdown<-function(session, menuBarId, dropdown){
-  updateMultiLevelMenu(session, menuBarId, dropdown, "dropDown")
+  updateMultiLevelMenu(session, menuBarId, "disable",  dropdown,  "dropdown")
 }
 
 #' Enable a menu item
@@ -52,7 +63,7 @@ disableMenuDropdown<-function(session, menuBarId, dropdown){
 #' @import shiny
 #' @export
 enableMenuItem<-function(session, menuBarId, item){
-  updateMultiLevelMenu(session, menuBarId, item, "actionItem")
+  updateMultiLevelMenu(session, menuBarId, "enable", item, "actionItem")
 }
 
 #' Enable a dropdown
@@ -63,7 +74,7 @@ enableMenuItem<-function(session, menuBarId, item){
 #' @import shiny
 #' @export
 enableMenuDropdown<-function(session, menuBarId, dropdown){
-  updateMultiLevelMenu(session, menuBarId, item, "dropdown")
+  updateMultiLevelMenu(session, menuBarId, "enable", dropdown, "dropdown")
 }
 
 #' Rename a menu item
@@ -129,6 +140,22 @@ removeMenuItem<-function(session, menuBarId,  value){
                        command="delete",
                        targetItem=value,
                        type= "actionItem"
+  )
+}
+
+#' removes a  menu item
+#' 
+#' @param session the session 
+#' @param menuBarId the id of the menubar to be updated
+#' @param label the label of the dropdown
+#' @import shiny
+#' @export
+removeMenuDropdown<-function(session, menuBarId,  label){
+  updateMultiLevelMenu(session=session, 
+                       menuBarId=menuBarId, 
+                       command="delete",
+                       targetItem=label,
+                       type= "dropdown"
   )
 }
 
