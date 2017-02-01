@@ -4,7 +4,7 @@
 \alias{updateMultiLevelMenu}
 \title{Update the Menu}
 \usage{
-updateMultiLevelMenu(session, menuBarId, command, targetItem, type, ...)
+updateMultiLevelMenu(session, menuBarId, command, target, type, ...)
 }
 \arguments{
 \item{session}{the session}
@@ -13,7 +13,11 @@ updateMultiLevelMenu(session, menuBarId, command, targetItem, type, ...)
 
 \item{command}{one of c('disable','enable', 'rename')}
 
-\item{targetItem}{the identifier(value) of dropDown/selection}
+\item{target}{the identifier(value) of dropdown/selection}
+
+\item{type}{one of c('actionItem', 'dropdown')}
+
+\item{...}{additional params}
 }
 \description{
 Update the Menu

@@ -1,5 +1,5 @@
 
-(function(){ // open object here
+(function(){ // begin object here
 
 
 var initializeMenu = function(){
@@ -17,8 +17,11 @@ var initializeMenu = function(){
   });
   $(".mm-menubar").each(function(){ 
     pid=$(this).attr("id"); 
+    $(this).attr("indx",0);
     //trigger change on message from child menuActionItem
     $(this).on("mssg", function(evt, param){
+      console.log("initializeMenu .mm-menubar mssg: " + param);
+      
       $(this).attr("value", param);
       $(this).trigger("change");
     });
@@ -39,16 +42,16 @@ $(document).ready(function(){
 var mmbarBinding = new Shiny.InputBinding();
 $.extend(mmbarBinding, {
   find: function(scope) {
-    //console.log("find: " +  JSON.stringify($(scope).find("div.mm-menubar")));
     return $(scope).find("div.mm-menubar");
   },
   
   getValue: function(el) {
-    var value = $(el).attr("value");
+    var value ={item: $(el).attr("value"), indx: $(el).attr("indx")};
     return(value);
   },
+  
   setValue: function(el, value) {
-    //
+    $(el).attr("value",value);
   },
   
   subscribe: function(el, callback) {
@@ -56,9 +59,19 @@ $.extend(mmbarBinding, {
       callback(false);
     });
   },
+  
   unsubscribe: function(el) {
     $(el).off(".mmbarBinding");
   }, 
+  
+  receiveMessage: function(el, data) {
+    if (data.hasOwnProperty('reset')){
+      var nindx = parseInt($(el).attr("indx"));
+      $(el).attr('indx', nindx+1 ) ;
+    }
+  },
+  
+  
   getRatePolicy: function(el){
     if (!el){
       console.log("Using an older version of Shiny, so unable to set the debounce rate policy.");
@@ -166,26 +179,33 @@ MultiLevelMenu.reinitBootStrap();
 
 Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   var id = data.id;
+  var type =data.type;
+  var target = data.target; // values of the items
+  var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value),
+  
+  
   var $el = $('#' + id);
   
-  var type =data.type;
-  var targetItem = data.targetItem; // values of the items
-  var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value),
   var srchStr="";
   var nid=null;
   
   //console.log(JSON.stringify(data));
   //pid is the menu id
 // searchStr points to the node of the newly created submenu
-
+  
   if(type=='dropdown'){ //applies to rename, disable/enable
-    srchStr="a.dropdown-toggle[value='" + targetItem + "']";
+    srchStr="a.mm-dropdown-toggle[value='" + target + "']";
   }
   if(type=='actionItem'){
-    srchStr=".menuActionItem[value='" + targetItem + "']";
+    srchStr=".menuActionItem[value='" + target + "']";
   }
   if(type=='dropdownList'){ // used to append submenu to dropdown
-    srchStr="li.drop-down-list[value='"+targetItem+"']"+">.dropdown-menu";
+    srchStr="li.drop-down-list[value='"+target+"']"+">.dropdown-menu";
+  }
+  if(target=='_'){ //kludge to add to top navbar
+    srchStr="ul.nav.navbar-nav";
+    cmd="addSubmenu";
+    type=='dropdownList';
   }
   
   
@@ -236,7 +256,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   
   if(cmd=="rename" && type=='actionItem'){
     if(data.param && data.param.length>1) {
-      //console.log(data.param[0]);
+      //console.log("rename item to" +data.param[0]);
       $el.find(srchStr).text(data.param[0]);
       $el.find(srchStr).attr("value", data.param[1]);
     }
@@ -244,6 +264,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   
   if(cmd=="rename" && type=='dropdown'){
     if(data.param && data.param.length>1) {
+      //console.log("rename dropdown to" +data.param[0]);
       $el.find(srchStr).text(data.param[0]);
       $el.find(srchStr).attr("value", data.param[1]);
     }
@@ -285,10 +306,10 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   }
   
   if(cmd=="before" && ( type=='actionItem' || type=='dropdown')){
-    console.log(type)
-    console.log(srchStr);
-    console.log('parent')
-    console.log($el.find(srchStr).parent());
+    //console.log(type);
+    //console.log(srchStr);
+    //console.log('parent');
+    //console.log($el.find(srchStr).parent());
     if(data.param) {
       nid = '#' + data.param.nid;
       $el.find(srchStr).parent().before( $("" + data.param.submenu));
@@ -302,7 +323,7 @@ Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
   if(cmd=="addSubmenu" && type=='dropdownList'){
     if(data.param) {
       nid = '#' + data.param.nid;
-      console.log(nid)
+      //console.log(nid);
       $el.find(srchStr).append( $("" + data.param.submenu));
       MultiLevelMenu.initSubMenu(id, nid);
     }

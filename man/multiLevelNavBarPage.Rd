@@ -9,7 +9,7 @@ multiLevelNavBarPage(..., title = "", id = NULL, theme = NULL)
 \arguments{
 \item{...}{any number of menu items or dropdowns}
 
-\item{title}{(optional)}
+\item{title}{(optional) the title of the menubar}
 
 \item{id}{the id to be associated with this menubar}
 
