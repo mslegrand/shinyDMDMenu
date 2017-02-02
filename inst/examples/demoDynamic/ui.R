@@ -7,7 +7,7 @@
 
 library(shiny)
 
-library(shinyMultilevelMenu)
+library(shinyDMDMenu)
 library(shinythemes)
 
 menuBarId<-'addDelDemo'
@@ -92,11 +92,12 @@ shinyUI(fluidPage(
       ),
       wellPanel(
         h4(tags$b("Renaming")),
-        fluidRow(
-          column(width=5,offset=0, 
-                 selectInput("renameTarget", NULL, choices="")) ,
-          column(width=1,offset=0, actionButton("renameToEvent","to")), 
+        fluidRow(column(width=1,offset=0, actionButton("renameToEvent","rename")),
           column(width=5,offset=1, 
+                 selectInput("renameTarget", NULL, choices="")) ,
+           
+          column(width=5,offset=0, 
+                 tags$b('to'),
                  textInput("renameTo", label=NULL, value = "")) 
         )
       )
@@ -104,15 +105,23 @@ shinyUI(fluidPage(
 
     mainPanel(
       wellPanel( style="margin-top:20px;",
-                 h4('About'),
-                 p('This app demonstrates a dmdMenu package to provide dynamic menu having mulitlevel dropdowns'),
-                 tags$ul(
-                  tags$li( 'dmdMenu can add/delete,disable/enable and rename at run-time'),
-                  tags$li( 'dmdMenu supports multilevel-dropdowns: ie dropdowns containing dropdowns'),
-                  tags$li( 'dmdMenu supports bootstrap themes'),
-                  tags$li( 'The dmdMenu package is available on github.')
-                 )   
-      ),
+          fluidRow(
+            column(width=6,offset=0, 
+                   tags$img( src="https://cloud.githubusercontent.com/assets/5139775/22185259/2ef71c62-e0b0-11e6-872b-2eaa67843c92.png", width="350")
+            ),
+            column(width=6,offset=0, 
+                   h4('About'),
+                   p('This app demonstrates a dmdMenu package to provide dynamic menu having mulitlevel dropdowns'),
+                   tags$ul(
+                     tags$li( 'dmdMenu can add/delete,disable/enable and rename at run-time'),
+                     tags$li( 'dmdMenu supports multilevel-dropdowns: ie dropdowns containing dropdowns'),
+                     tags$li( 'dmdMenu supports bootstrap themes'),
+                     tags$li( 'The dmdMenu package is available on github at', 
+                              tags$a( 'https://github.com/mslegrand/shinyDMDMenu'))
+                   )   
+            )
+          )
+        ),
       #wellPanel( style="margin-top:20px",
         h4('Instructions'),
         wellPanel( 

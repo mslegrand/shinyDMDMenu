@@ -1,4 +1,4 @@
-Package: shinyMultilevelMenu
+Package: shinyDMDMenu
 Type: Package
 Title: Multi-level Menu for Shiny
 Version: 0.2.2
