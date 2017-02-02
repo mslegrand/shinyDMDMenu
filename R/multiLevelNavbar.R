@@ -1,4 +1,4 @@
-#Derived from boot snippet: fontenele/bootstrap-navbar-dropdowns
+#Dropdown derived from boot snippet: fontenele/bootstrap-navbar-dropdowns
 #
 # see also 
 # http://www.w3schools.com/bootstrap/bootstrap_navbar.asp
