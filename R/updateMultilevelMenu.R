@@ -188,7 +188,7 @@ removeMenuDropdown<-function(session, menuBarId,  label){
 #' 
 #' @import shiny
 #' @export
-addSubMenu<-function(session, menuBarId,  dropdown, submenu){
+appendToDropdown<-function(session, menuBarId,  dropdown, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateMultiLevelMenu(session=session, 
                        menuBarId=menuBarId, 

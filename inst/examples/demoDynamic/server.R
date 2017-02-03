@@ -122,7 +122,7 @@ shinyServer(function(input, output, session) {
       }
       if(hasKids){
         lapply(kids, function(k)addChildParent(k,label))
-        addSubMenu(
+        appendToDropdown(
           session, 
           menuBarId= menuBarId,  
           dropdown=dropdown, 
@@ -133,7 +133,7 @@ shinyServer(function(input, output, session) {
             )
         )
       } else {
-        addSubMenu(
+        appendToDropdown(
           session, 
           menuBarId= menuBarId,  
           dropdown=dropdown, 
