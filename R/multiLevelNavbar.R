@@ -139,8 +139,8 @@ multiLevelNavBarPage<-function(..., title="", id=NULL, theme=NULL){
       if (!is.null(theme)) {
         tags$head(tags$link(rel = "stylesheet", type = "text/css", href = theme))
       },
-      tags$script(src = "multilevelMenu/multiLevelNavbar.js"),
-      tags$link(rel = "stylesheet", type = "text/css", href ="multilevelMenu/multiLevelNavbar.css" )
+      tags$script(src = "shinyDMDMenu/multiLevelNavbar.js"),
+      tags$link(rel = "stylesheet", type = "text/css", href ="shinyDMDMenu/multiLevelNavbar.css" )
     )), 
     div(
       id=id,

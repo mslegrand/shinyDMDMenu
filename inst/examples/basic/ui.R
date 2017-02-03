@@ -6,7 +6,7 @@
 #
 
 library(shiny)
-library(shinyMultilevelMenu)
+library(shinyDMDMenu)
 
 shinyUI(fluidPage(
   multiLevelNavBarPage(
