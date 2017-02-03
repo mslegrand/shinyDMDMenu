@@ -18,7 +18,7 @@ shinyUI(fluidPage(
     tags$style(HTML("div.well{padding-top:10px; padding-bottom:0;}")
   )),
   div(style="margin-bottom:50px",
-    multiLevelNavBarPage( title='Dynamic Multilevel-Dropdown Menu',
+    multiLevelNavBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
                         theme=shinytheme( "united" ),
                         id=menuBarId,
                           subMenu(
@@ -123,14 +123,14 @@ shinyUI(fluidPage(
           )
         ),
       #wellPanel( style="margin-top:20px",
-        h4('Instructions'),
+        h4('Try to Editing the Above Main Menu as Follows:'),
         wellPanel( 
           h5('Adding to the Menu'),
           tags$ol( type='l',
             tags$li('Decide what to add:', 
               tags$ul(
                 tags$li( 'For a single menu item: fill the "Adding" edit box with the menu item name'),
-                tags$li( 'For a dropdown: fill the "Adding" edit box with the dropdown name and add one or more lines in the "children" edit boxes for the names of the menu items belonging to that dropdown')
+                tags$li( 'For a dropdown: fill the "Adding" edit box with the dropdown name then in "children" edit box add one or more menu items, placing each item on a seperate line.')
               )
             ),
             tags$li('Decide where to add:',
@@ -146,7 +146,7 @@ shinyUI(fluidPage(
           tags$ul(
             tags$li( "By 'entry' we mean either a dropdown name or a menu item name."),
             tags$li( "To avoid ambiguity on insertion and deletion, we keep the names unique"),
-            tags$li( "The '_' (underscore) selection represents the menubar at the top.")
+            tags$li( "The '_' (underscore) selection represents the menubar at the top of the 'Main Menu'.")
           )
         ), #endof adding to menu
         wellPanel( 
