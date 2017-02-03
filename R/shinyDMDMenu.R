@@ -113,7 +113,7 @@ subMenu<-function(label,  ...){ ### !!! should we allow a value or id specificat
 #' @param theme the name of a shiny bootstrap theme. (requires shinythemes package)
 #' @import shiny
 #' @export
-multiLevelNavBarPage<-function(..., title="", id=NULL, theme=NULL){
+dmdMenuBarPage<-function(..., title="", id=NULL, theme=NULL){
   if(is.null(id)){
     stop("id should not be null")
   }

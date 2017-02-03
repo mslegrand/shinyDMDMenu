@@ -18,7 +18,7 @@ shinyUI(fluidPage(
     tags$style(HTML("div.well{padding-top:10px; padding-bottom:0;}")
   )),
   div(style="margin-bottom:50px",
-    multiLevelNavBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
+      dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
                         theme=shinytheme( "united" ),
                         id=menuBarId,
                           subMenu(

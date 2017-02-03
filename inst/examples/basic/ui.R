@@ -9,7 +9,7 @@ library(shiny)
 library(shinyDMDMenu)
 
 shinyUI(fluidPage(
-  multiLevelNavBarPage(
+  dmdMenuBarPage(
                        id='mytop',
                        menuItem("Appricot"),
                        menuItem("Bannana"),
