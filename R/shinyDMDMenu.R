@@ -51,7 +51,7 @@ lineDivider<-function(){
 #' @param value return value upon clicking
 #' @import shiny
 #' @export
-menuItem<-function(  label, value=label ){  
+menuItem<-function(  label, value=label, id=gid() ){  
   href='#'
   if(missing(label)){
     stop("label not provided")
@@ -61,13 +61,13 @@ menuItem<-function(  label, value=label ){
   }
   
   tag('li', 
-    list(a(href=href, id=gid(), value=value,
+    list(a(href=href, id=id, value=value,
            class='menuActionItem', label))
   )
 } 
 
-dropDownListlabel<-function(label){ ### !!! should we allow a value or id specification?
-  a(href='#',  id=gid(),
+dropDownListlabel<-function(label, id=gid()){ ### !!! should we allow a value or id specification?
+  a(href='#', id=id  ,
     class="dropdown-toggle mm-dropdown-toggle",
     "data-toggle"="dropdown",
     value=label, 
@@ -134,8 +134,6 @@ dmdMenuBarPage<-function(..., title="", id=NULL, theme=NULL){
   tagList(   
     singleton(tags$head(
       initResourcePaths(),
-      tags$script(src = "https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"),
-      tags$script(src = "https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"),
       if (!is.null(theme)) {
         tags$head(tags$link(rel = "stylesheet", type = "text/css", href = theme))
       },
