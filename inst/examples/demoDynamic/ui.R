@@ -21,11 +21,11 @@ shinyUI(fluidPage(
       dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
                         theme=shinytheme( "united" ),
                         id=menuBarId,
-                          subMenu(
+                          menuDropdown(
                             "Dropdown 1",
                             menuItem("menu 1-1"),
                             menuItem("menu 1-2"),
-                            subMenu("Dropdown 2",
+                            menuDropdown("Dropdown 2",
                                     menuItem("menu 2-1"),
                                     menuItem("menu 2-2"),
                                     menuItem("menu 2-3")

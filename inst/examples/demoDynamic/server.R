@@ -128,7 +128,7 @@ shinyServer(function(input, output, session) {
           dropdown=dropdown, 
           submenu=
             do.call(
-              function(...){ subMenu(label,...) },
+              function(...){ menuDropdown(label,...) },
               lapply(kids, menuItem)
             )
         )
@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
           entry=entry, 
           submenu=
             do.call(
-              function(...){ subMenu(label,...) },
+              function(...){ menuDropdown(label,...) },
               lapply(kids, menuItem)
             )
         )

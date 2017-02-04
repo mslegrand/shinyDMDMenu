@@ -94,7 +94,7 @@ dropDownListContents<-function(...){
 #' @param id  id of the element (optional, can be used for selection)
 #' @import shiny
 #' @export
-subMenu<-function(label,  ..., id=gid() ){ ### !!! should we allow a value or id specification?
+menuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value or id specification?
   value=label ### !!! should we allow a value or id specification?
   tag('li', 
     list(
