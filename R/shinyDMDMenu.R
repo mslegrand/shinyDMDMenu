@@ -63,13 +63,13 @@ menuItem<-function(  label, value=label, id=gid() ){
   
   tag('li', 
     list(a(href=href, id=id, value=value,
-           class='menuActionItem', label))
+           class='dmdMenuItem', label))
   )
 } 
 
-dropDownListlabel<-function(label, id=gid()){ ### !!! should we allow a value or id specification?
+dropDownListlabel<-function(label, id){ ### !!! should we allow a value or id specification?
   a(href='#', id=id  ,
-    class="dropdown-toggle mm-dropdown-toggle",
+    class="dropdown-toggle dmdm-dropdown-toggle",
     "data-toggle"="dropdown",
     value=label, 
     label,
@@ -98,10 +98,10 @@ menuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value 
   value=label ### !!! should we allow a value or id specification?
   tag('li', 
     list(
-      id=id,
+      id=gid(),
       class="drop-down-list",
       value=value,
-      dropDownListlabel(label),
+      dropDownListlabel(label, id),
       dropDownListContents(...) 
     )
   )

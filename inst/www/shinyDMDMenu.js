@@ -5,7 +5,7 @@
 var initializeMenu = function(){
   var pid;
   //.navbar is top level, a.dropdown-toggle are subsequent levels
-  $('.mm-menubar a.mm-dropdown-toggle').on('click', function(e) {
+  $('.mm-menubar a.dmdm-dropdown-toggle').on('click', function(e) {
         var $el2 = $(this);
         var $parent = $(this).offsetParent(".dropdown-menu");
         $(this).parent("li").toggleClass('open');
@@ -18,15 +18,15 @@ var initializeMenu = function(){
   $(".mm-menubar").each(function(){ 
     pid=$(this).attr("id"); 
     $(this).attr("indx",0);
-    //trigger change on message from child menuActionItem
+    //trigger change on message from child dmdMenuItem
     $(this).on("mssg", function(evt, param){
-      console.log("initializeMenu .mm-menubar mssg: " + param);
+      //console.log("initializeMenu .mm-menubar mssg: " + param);
       
       $(this).attr("value", param);
       $(this).trigger("change");
     });
-    //add trigger to send message from child menuActionItem
-    $(this).find(".menuActionItem").each( function(){
+    //add trigger to send message from child dmdMenuItem
+    $(this).find(".dmdMenuItem").each( function(){
        $(this).attr("aid",pid);
         $(this).on('click',function(evt){ 
           $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
@@ -102,19 +102,19 @@ MultiLevelMenu=(function(){ // open object here
     var sheet = sheets[index];
     
     if("insertRule" in sheetX) {
-      console.log("insertRule");
-      console.log( selector + "{" + rules + "}" );
+      //console.log("insertRule");
+      //console.log( selector + "{" + rules + "}" );
   		sheetX.insertRule(selector + "{" + rules + "}",0);
   	}
   	else if("addRule" in sheetX) {
-  	  console("addRule");
+  	  //console("addRule");
   		sheetX.addRule(selector, rules, -1);
   	}
   };
 
   var getStyleRuleValue = function(style, selector, asheet) {
       var sheets = typeof asheet !== 'undefined' ? [asheet] : document.styleSheets;
-      console.log("sheets.length=" + sheets.length);
+      //console.log("sheets.length=" + sheets.length);
       
       var rtv=null;
       for (var i = 0, l = sheets.length; i < l; i++) {
@@ -147,7 +147,7 @@ MultiLevelMenu=(function(){ // open object here
 
   var initializeSubMenu = function(pid, searchStr){
     //.navbar is top level, a.dropdown-toggle are subsequent levels
-    $(searchStr).find('a.mm-dropdown-toggle').each( function(){
+    $(searchStr).find('a.dmdm-dropdown-toggle').each( function(){
       $(this).on('click', function(e) {
           var $el2 = $(this);
           var $parent = $(this).offsetParent(".dropdown-menu");
@@ -159,8 +159,8 @@ MultiLevelMenu=(function(){ // open object here
           return false;
       });
     });
-    //add trigger to send message from child menuActionItem
-    $(searchStr).parent().find(".menuActionItem").each( function(){
+    //add trigger to send message from child dmdMenuItem
+    $(searchStr).parent().find(".dmdMenuItem").each( function(){
        $(this).attr("aid",pid);
         $(this).on('click',function(evt){ 
           $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
@@ -192,12 +192,14 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   //console.log(JSON.stringify(data));
   //pid is the menu id
 // searchStr points to the node of the newly created submenu
-  
+  if(type==="id" && data.id!==target){
+    srchStr="#" + target;
+  }
   if(type=='dropdown'){ //applies to rename, disable/enable
-    srchStr="a.mm-dropdown-toggle[value='" + target + "']";
+    srchStr="a.dmdm-dropdown-toggle[value='" + target + "']";
   }
   if(type=='actionItem'){
-    srchStr=".menuActionItem[value='" + target + "']";
+    srchStr=".dmdMenuItem[value='" + target + "']";
   }
   if(type=='dropdownList'){ // used to append submenu to dropdown
     srchStr="li.drop-down-list[value='"+target+"']"+">.dropdown-menu";
@@ -270,7 +272,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
-  //console.log('cmd='+ cmd +"; type=" + type);
+  
   if(cmd=="add" && type=='dropdownList'){
     if(data.param) {
       var label=data.param.label, 
@@ -278,10 +280,10 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       key=data.param.value;
       
       var $newEle=$("<li><a href='#' value='" + key +"' aid='"
-        + id +"' id='"+ gid +"' class='menuActionItem' " +
+        + id +"' id='"+ gid +"' class='dmdMenuItem' " +
         ">" + label+"</a></li>");
       $el.find(srchStr).append($newEle);
-      $el.find(".menuActionItem[value='" + key + "']").each( function(){
+      $el.find(".dmdMenuItem[value='" + key + "']").each( function(){
         $(this).on('click',function(evt){ 
           $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")]); 
         });
