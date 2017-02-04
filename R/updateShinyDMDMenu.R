@@ -21,7 +21,7 @@ dirtyMenu<-function(session, menuBarId){
 #' @param ... additional params
 #' @import shiny
 #' @export
-updateMultiLevelMenu<-function(session, menuBarId, 
+updateDMDMenu<-function(session, menuBarId, 
                           command, 
                           target, 
                           type, ...){
@@ -36,7 +36,7 @@ updateMultiLevelMenu<-function(session, menuBarId,
   
   theList <- list(id=menuBarId,  target=target, cmd=command, type=type)
   theList <- c(theList, list(...))
-  session$sendCustomMessage("multiLevelMenuBar", theList)
+  session$sendCustomMessage("DMDMenu", theList)
 }
 
 #' Disable a menu item
@@ -47,7 +47,7 @@ updateMultiLevelMenu<-function(session, menuBarId,
 #' @import shiny
 #' @export
 disableMenuItem<-function(session, menuBarId, item){
-  updateMultiLevelMenu(session, menuBarId, "disable", item, "actionItem")
+  updateDMDMenu(session, menuBarId, "disable", item, "actionItem")
 }
 
 #' Disable a dropdown
@@ -58,7 +58,7 @@ disableMenuItem<-function(session, menuBarId, item){
 #' @import shiny
 #' @export
 disableMenuDropdown<-function(session, menuBarId, dropdown){
-  updateMultiLevelMenu(session, menuBarId, "disable",  dropdown,  "dropdown")
+  updateDMDMenu(session, menuBarId, "disable",  dropdown,  "dropdown")
 }
 
 #' Enable a menu item
@@ -69,7 +69,7 @@ disableMenuDropdown<-function(session, menuBarId, dropdown){
 #' @import shiny
 #' @export
 enableMenuItem<-function(session, menuBarId, item){
-  updateMultiLevelMenu(session, menuBarId, "enable", item, "actionItem")
+  updateDMDMenu(session, menuBarId, "enable", item, "actionItem")
 }
 
 #' Enable a dropdown
@@ -80,7 +80,7 @@ enableMenuItem<-function(session, menuBarId, item){
 #' @import shiny
 #' @export
 enableMenuDropdown<-function(session, menuBarId, dropdown){
-  updateMultiLevelMenu(session, menuBarId, "enable", dropdown, "dropdown")
+  updateDMDMenu(session, menuBarId, "enable", dropdown, "dropdown")
 }
 
 #' Rename a menu item
@@ -92,7 +92,7 @@ enableMenuDropdown<-function(session, menuBarId, dropdown){
 #' @import shiny
 #' @export
 renameMenuItem<-function(session, menuBarId, item, newLabel ){
-  updateMultiLevelMenu(session, menuBarId, 
+  updateDMDMenu(session, menuBarId, 
                        command="rename", 
                        target=item, 
                        type="actionItem", 
@@ -109,7 +109,7 @@ renameMenuItem<-function(session, menuBarId, item, newLabel ){
 #' @import shiny
 #' @export
 renameMenuDropdown<-function(session, menuBarId, dropdown, newLabel ){
-  updateMultiLevelMenu(session, menuBarId, 
+  updateDMDMenu(session, menuBarId, 
                        command="rename", 
                        target=dropdown, 
                        type="dropdown", 
@@ -129,7 +129,7 @@ renameMenuDropdown<-function(session, menuBarId, dropdown, newLabel ){
 #' @import shiny
 #' @export
 addMenuItem<-function(session, menuBarId, parent, label, value=label){
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="add",
                        target=parent,
@@ -150,7 +150,7 @@ addMenuItem<-function(session, menuBarId, parent, label, value=label){
 #' @import shiny
 #' @export
 removeMenuItem<-function(session, menuBarId,  value){
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="delete",
                        target=value,
@@ -166,7 +166,7 @@ removeMenuItem<-function(session, menuBarId,  value){
 #' @import shiny
 #' @export
 removeMenuDropdown<-function(session, menuBarId,  label){
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="delete",
                        target=label,
@@ -190,7 +190,7 @@ removeMenuDropdown<-function(session, menuBarId,  label){
 #' @export
 appendToDropdown<-function(session, menuBarId,  dropdown, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="addSubmenu",
                        target=dropdown,
@@ -214,7 +214,7 @@ appendToDropdown<-function(session, menuBarId,  dropdown, submenu){
 #' @export
 insertBeforeMenuItem<-function(session, menuBarId,  entry, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="before",
                        target=entry,
@@ -237,7 +237,7 @@ insertBeforeMenuItem<-function(session, menuBarId,  entry, submenu){
 #' @export
 insertAfterMenuItem<-function(session, menuBarId,  entry, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="after",
                        target=entry,
@@ -259,7 +259,7 @@ insertAfterMenuItem<-function(session, menuBarId,  entry, submenu){
 #' @export
 insertBeforeDropdown<-function(session, menuBarId,  entry, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="before",
                        target=entry,
@@ -282,7 +282,7 @@ insertBeforeDropdown<-function(session, menuBarId,  entry, submenu){
 #' @export
 insertAfterDropdown<-function(session, menuBarId,  entry, submenu){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
-  updateMultiLevelMenu(session=session, 
+  updateDMDMenu(session=session, 
                        menuBarId=menuBarId, 
                        command="after",
                        target=entry,

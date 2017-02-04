@@ -49,6 +49,7 @@ lineDivider<-function(){
 #' 
 #' @param label the displayed label for the menu item
 #' @param value return value upon clicking
+#' @param id optional id (can be used for selecting)
 #' @import shiny
 #' @export
 menuItem<-function(  label, value=label, id=gid() ){  
@@ -90,13 +91,14 @@ dropDownListContents<-function(...){
 #' 
 #' @param label the label of the drop down
 #' @param ... any number of menu items or dropdowns
+#' @param id  id of the element (optional, can be used for selection)
 #' @import shiny
 #' @export
-subMenu<-function(label,  ...){ ### !!! should we allow a value or id specification?
+subMenu<-function(label,  ..., id=gid() ){ ### !!! should we allow a value or id specification?
   value=label ### !!! should we allow a value or id specification?
   tag('li', 
     list(
-      id=gid(),
+      id=id,
       class="drop-down-list",
       value=value,
       dropDownListlabel(label),

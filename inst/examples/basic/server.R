@@ -17,21 +17,21 @@ shinyServer(function(input, output, session) {
       cmd<-input$bannanaDisable
       targetItem<-"Bannana"
       type<-"actionItem"
-      updateMultiLevelMenu(session, menuBarId, cmd, targetItem, type)
+      updateDMDMenu(session, menuBarId, cmd, targetItem, type)
   }) 
   observeEvent( input$shakespearDisable,{
     menuBarId<-"mytop"
     cmd<-input$shakespearDisable
     targetItem<-"Shakespear"
     type<-"actionItem"
-    updateMultiLevelMenu(session, menuBarId, cmd, targetItem, type)
+    updateDMDMenu(session, menuBarId, cmd, targetItem, type)
   }) 
   observeEvent( input$usDisable,{ 
     menuBarId<-"mytop"
     cmd<-input$usDisable
     targetItem<-"UnitedStates"
     type<-"dropDown"
-    updateMultiLevelMenu(session, menuBarId, cmd, targetItem, type)
+    updateDMDMenu(session, menuBarId, cmd, targetItem, type)
   }) 
   
   observeEvent( input$firstfruit,{ 
@@ -42,7 +42,7 @@ shinyServer(function(input, output, session) {
     targetItem<-choices[-which(choices==tmp)]
     type<-"actionItem"
     params<-c(tmp,tmp)
-    updateMultiLevelMenu(session, menuBarId, cmd, targetItem, type, param=params) 
+    updateDMDMenu(session, menuBarId, cmd, targetItem, type, param=params) 
   })  
   
   observeEvent( input$otherfruit,{ 
@@ -53,6 +53,6 @@ shinyServer(function(input, output, session) {
     targetItem<-choices[-which(choices==tmp)]
     type<-"dropDown"
     params<-c(tmp,tmp)
-    updateMultiLevelMenu(session, menuBarId, cmd, targetItem, type, param=params) 
+    updateDMDMenu(session, menuBarId, cmd, targetItem, type, param=params) 
   })  
 }) 

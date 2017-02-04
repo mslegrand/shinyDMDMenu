@@ -39,8 +39,8 @@ $(document).ready(function(){
   initializeMenu();
 });
     
-var mmbarBinding = new Shiny.InputBinding();
-$.extend(mmbarBinding, {
+var dmdmBinding = new Shiny.InputBinding();
+$.extend(dmdmBinding, {
   find: function(scope) {
     return $(scope).find("div.mm-menubar");
   },
@@ -55,13 +55,13 @@ $.extend(mmbarBinding, {
   },
   
   subscribe: function(el, callback) {
-    $(el).on('change.mmbarBinding', function(e) {
+    $(el).on('change.dmdmBinding', function(e) {
       callback(false);
     });
   },
   
   unsubscribe: function(el) {
-    $(el).off(".mmbarBinding");
+    $(el).off(".dmdmBinding");
   }, 
   
   receiveMessage: function(el, data) {
@@ -82,7 +82,7 @@ $.extend(mmbarBinding, {
   
 });
 
-Shiny.inputBindings.register(mmbarBinding);
+Shiny.inputBindings.register(dmdmBinding);
 
 })(); //close the object here
 
@@ -177,7 +177,7 @@ MultiLevelMenu=(function(){ // open object here
 
 MultiLevelMenu.reinitBootStrap();
 
-Shiny.addCustomMessageHandler('multiLevelMenuBar', function(data) {
+Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   var id = data.id;
   var type =data.type;
   var target = data.target; // values of the items
