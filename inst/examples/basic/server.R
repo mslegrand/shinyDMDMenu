@@ -16,14 +16,14 @@ shinyServer(function(input, output, session) {
       menuBarId<-"mytop"
       cmd<-input$bannanaDisable
       targetItem<-"Bannana"
-      type<-"actionItem"
+      type<-"menuItem"
       updateDMDMenu(session, menuBarId, cmd, targetItem, type)
   }) 
   observeEvent( input$shakespearDisable,{
     menuBarId<-"mytop"
     cmd<-input$shakespearDisable
     targetItem<-"Shakespear"
-    type<-"actionItem"
+    type<-"menuItem"
     updateDMDMenu(session, menuBarId, cmd, targetItem, type)
   }) 
   observeEvent( input$usDisable,{ 
@@ -40,7 +40,7 @@ shinyServer(function(input, output, session) {
     cmd<-"rename"
     tmp<-input$firstfruit
     targetItem<-choices[-which(choices==tmp)]
-    type<-"actionItem"
+    type<-"menuItem"
     params<-c(tmp,tmp)
     updateDMDMenu(session, menuBarId, cmd, targetItem, type, param=params) 
   })  

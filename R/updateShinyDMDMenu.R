@@ -17,7 +17,7 @@ dirtyMenu<-function(session, menuBarId){
 #' @param menuBarId the id of the menubar to be updated
 #' @param command one of c('disable','enable', 'rename')
 #' @param target the identifier(value) of dropdown/selection 
-#' @param type one of c('actionItem', 'dropdown')
+#' @param type one of c('menuItem', 'dropdown', '_', '*')
 #' @param ... additional params
 #' @import shiny
 #' @export
@@ -47,7 +47,7 @@ updateDMDMenu<-function(session, menuBarId,
 #' @import shiny
 #' @export
 disableMenuItem<-function(session, menuBarId, item){
-  updateDMDMenu(session, menuBarId, "disable", item, "actionItem")
+  updateDMDMenu(session, menuBarId, "disable", item, "menuItem")
 }
 
 #' Disable a dropdown
@@ -61,6 +61,47 @@ disableMenuDropdown<-function(session, menuBarId, dropdown){
   updateDMDMenu(session, menuBarId, "disable",  dropdown,  "dropdown")
 }
 
+
+#' @param session The session.
+#' @param menuBarId The id of this menubar (top level menu).
+#' @param entry The identifier for the target entry(ies). 
+#' This can be the value of the entry value in the case that the entry
+#' is a menuItem, or the title of in the case that the entry is a dropdown,
+#' or if an id was specified when creating the entry, the entry id. Which 
+#' case is specified by the "type" specification parameter.
+#' @param type Type specification parameter of the entry identifier.
+#' The type is one of  "id", "*", menuItem", "dropdown". 
+#' Type is used to determine how to interpret "entry" when searching for the
+#' that entry. Specifically:
+#' \describe{
+#' \item{if type=="id"}{ then \emph{entry} specifies the id of the target element}
+#' \item{if type=="menuItem"}{then \emph{entry} specifies the value of target element(s) that are menuitems}
+#' \item{if type=="dropdown"}{then \emph{entry} specifies the title of target element(s) that are dropdowns} 
+#' \item{if type=="*"}{combines both types \emph{menuItem} and \emph{dropdown} to search for the target element}
+#' } 
+#' the default for type is "*"
+#' @name typeParams
+NULL
+
+
+#' Enable/Disable a menu entry (a menu item or dropdown with descendants)
+#' 
+#' 
+#' @rdname typeParams
+#' 
+#' @import shiny
+#' @export
+disableEntry<-function(session, menuBarId, entry,  type="*"){
+  updateDMDMenu(session, menuBarId, "disable", entry, "menuItem")
+}
+
+#' @rdname typeParams
+#' @export
+enableEntry<-function(session, menuBarId, entry,  type="*"){
+  updateDMDMenu(session, menuBarId, "enable", entry, "menuItem")
+}
+
+
 #' Enable a menu item
 #' 
 #' @param session the session 
@@ -69,7 +110,7 @@ disableMenuDropdown<-function(session, menuBarId, dropdown){
 #' @import shiny
 #' @export
 enableMenuItem<-function(session, menuBarId, item){
-  updateDMDMenu(session, menuBarId, "enable", item, "actionItem")
+  updateDMDMenu(session, menuBarId, "enable", item, "menuItem")
 }
 
 #' Enable a dropdown
@@ -95,7 +136,7 @@ renameMenuItem<-function(session, menuBarId, item, newLabel ){
   updateDMDMenu(session, menuBarId, 
                        command="rename", 
                        target=item, 
-                       type="actionItem", 
+                       type="menuItem", 
                        param=c(newLabel, newLabel))
 }
 
@@ -154,7 +195,7 @@ removeMenuItem<-function(session, menuBarId,  value){
                        menuBarId=menuBarId, 
                        command="delete",
                        target=value,
-                       type= "actionItem"
+                       type= "menuItem"
   )
 }
 
@@ -218,7 +259,7 @@ insertBeforeMenuItem<-function(session, menuBarId,  entry, submenu){
                        menuBarId=menuBarId, 
                        command="before",
                        target=entry,
-                       type= "actionItem", 
+                       type= "menuItem", 
                        param=list(
                          submenu=paste(submenu, collapse=" "),
                          nid=nid
@@ -241,7 +282,7 @@ insertAfterMenuItem<-function(session, menuBarId,  entry, submenu){
                        menuBarId=menuBarId, 
                        command="after",
                        target=entry,
-                       type= "actionItem", 
+                       type= "menuItem", 
                        param=list(
                          submenu=paste(submenu, collapse=" "),
                          nid=nid

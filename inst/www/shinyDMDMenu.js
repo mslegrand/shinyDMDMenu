@@ -178,19 +178,19 @@ MultiLevelMenu=(function(){ // open object here
 MultiLevelMenu.reinitBootStrap();
 
 Shiny.addCustomMessageHandler('DMDMenu', function(data) {
-  var id = data.id;
+  //console.log(JSON.stringify(data));
+  var id = data.id; // the menubar id
   var type =data.type;
-  var target = data.target; // values of the items
-  var cmd = data.cmd;  //cmd: disable, enable, remove, addto, rename (label, value),
-  
+  var target = data.target; // values or id of the items/dropdown
+  var cmd = data.cmd;  
   
   var $el = $('#' + id);
   
   var srchStr="";
   var nid=null;
   
-  //console.log(JSON.stringify(data));
-  //pid is the menu id
+  
+  
 // searchStr points to the node of the newly created submenu
   if(type==="id" && data.id!==target){
     srchStr="#" + target;
@@ -198,7 +198,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   if(type=='dropdown'){ //applies to rename, disable/enable
     srchStr="a.dmdm-dropdown-toggle[value='" + target + "']";
   }
-  if(type=='actionItem'){
+  if(type=='menuItem'){
     srchStr=".dmdMenuItem[value='" + target + "']";
   }
   if(type=='dropdownList'){ // used to append submenu to dropdown
@@ -209,9 +209,13 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     cmd="addSubmenu";
     type=='dropdownList';
   }
+  if(type=='*'){
+    srchStr=".dmdMenuItem[value='" + target + "'], " +
+    "a.dmdm-dropdown-toggle[value='" + target + "']";
+  }
   
   
-  if(cmd=="disable" && type=='actionItem'){
+  if(cmd=="disable" && type=='menuItem'){
     if( ! $el.find(srchStr).hasClass("disabled") ){
       //console.log( "disabling");
       $el.find(srchStr).prop("disabled", true);
@@ -220,7 +224,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
-  if(cmd=="enable" && type=='actionItem'){
+  if(cmd=="enable" && type=='menuItem'){
     if( $el.find(srchStr).hasClass("disabled") ){
       //console.log( "enabling");
       $el.find(srchStr).prop("disabled", false);
@@ -256,7 +260,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
-  if(cmd=="rename" && type=='actionItem'){
+  if(cmd=="rename" && type=='menuItem'){
     if(data.param && data.param.length>1) {
       //console.log("rename item to" +data.param[0]);
       $el.find(srchStr).text(data.param[0]);
@@ -291,13 +295,13 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
-  if(cmd=="delete" && ( type=='actionItem' || type=='dropdown')){
+  if(cmd=="delete" && ( type=='menuItem' || type=='dropdown')){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
     $el.find(srchStr).parent().empty();
   }
   
-  if(cmd=="after" && ( type=='actionItem' || type=='dropdown')){
+  if(cmd=="after" && ( type=='menuItem' || type=='dropdown')){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
     if(data.param) {
@@ -307,7 +311,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
-  if(cmd=="before" && ( type=='actionItem' || type=='dropdown')){
+  if(cmd=="before" && ( type=='menuItem' || type=='dropdown')){
     //console.log(type);
     //console.log(srchStr);
     //console.log('parent');
@@ -320,7 +324,6 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
 
-  
   //need to add submenu
   if(cmd=="addSubmenu" && type=='dropdownList'){
     if(data.param) {

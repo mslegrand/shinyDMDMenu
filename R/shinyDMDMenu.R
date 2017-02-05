@@ -45,7 +45,7 @@ lineDivider<-function(){
   tag('li', list(class='divider'))
 }
 
-#' Creates a menu action item
+#' Creates a menu  item
 #' 
 #' @param label the displayed label for the menu item
 #' @param value return value upon clicking
