@@ -277,24 +277,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   }
   
   
-  if(cmd=="add" && type=='dropdownList'){
-    if(data.param) {
-      var label=data.param.label, 
-      gid=data.param.gid, 
-      key=data.param.value;
-      
-      var $newEle=$("<li><a href='#' value='" + key +"' aid='"
-        + id +"' id='"+ gid +"' class='dmdMenuItem' " +
-        ">" + label+"</a></li>");
-      $el.find(srchStr).append($newEle);
-      $el.find(".dmdMenuItem[value='" + key + "']").each( function(){
-        $(this).on('click',function(evt){ 
-          $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")]); 
-        });
-      });
-    }
-  }
-  
+
   if(cmd=="delete" && ( type=='menuItem' || type=='dropdown')){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
