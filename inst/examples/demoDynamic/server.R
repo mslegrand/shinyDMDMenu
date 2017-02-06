@@ -68,9 +68,9 @@ shinyServer(function(input, output, session) {
     entry<-input$disableTarget
     if(entry!=""){
       if(entry %in% dropdowns() ){
-        disableMenuDropdown(session, menuBarId, entry)
+        disableDMDM(session, menuBarId, entry, type="dropdown")
       } else {
-        disableMenuItem(session, menuBarId, entry)
+        disableDMDM(session, menuBarId, entry, type="menuItem")
       }
       customMenu$disabled<-c(customMenu$disabled, entry)
     }
@@ -80,9 +80,9 @@ shinyServer(function(input, output, session) {
     entry<-input$enableTarget
     if(entry!=""){
       if(entry %in% dropdowns() ){
-        enableMenuDropdown(session, menuBarId, entry)
+        enableDMDM(session, menuBarId, entry, type="dropdown")
       } else {
-        enableMenuItem(session, menuBarId, entry)
+        enableDMDM(session, menuBarId, entry, type="menuItem")
       }
       customMenu$disabled<-setdiff(customMenu$disabled, entry)
     }
@@ -122,7 +122,7 @@ shinyServer(function(input, output, session) {
       }
       if(hasKids){
         lapply(kids, function(k)addChildParent(k,label))
-        appendToDropdown(
+        appendDMDM(
           session, 
           menuBarId= menuBarId,  
           dropdown=dropdown, 
@@ -133,7 +133,7 @@ shinyServer(function(input, output, session) {
             )
         )
       } else {
-        appendToDropdown(
+        appendDMDM(
           session, 
           menuBarId= menuBarId,  
           dropdown=dropdown, 
@@ -149,21 +149,13 @@ shinyServer(function(input, output, session) {
     if(nchar(entry)>0 && nchar(label)>0 && isOk(label)){
       parent<-getParent(entry) # used to update childParent data.frame
       
-      if(direction=='before'){
-        if(entry %in% dropdowns() ){
-          insertFn<-insertBeforeDropdown
-        } else {
-          insertFn<-insertBeforeMenuItem
-        }
-      } else {
-        if(entry %in% dropdowns() ){
-          insertFn<-insertAfterDropdown
-        } else {
-          insertFn<-insertAfterMenuItem
-        }
+      insertFn<-if(direction=='before'){ 
+        insertBeforeDMDM 
+      }else{
+        insertAfterDMDM
       }
-      
-      
+      type<-ifelse( (entry %in% dropdowns() ), "dropdown", "menuItem")
+
       kids<-input$level2
       hasKids<-FALSE
       if(nchar(kids)>0){
@@ -180,7 +172,8 @@ shinyServer(function(input, output, session) {
         insertFn(
           session, 
           menuBarId= menuBarId,  
-          entry=entry, 
+          entry=entry,
+          type=type,
           submenu=
             do.call(
               function(...){ menuDropdown(label,...) },
@@ -192,6 +185,7 @@ shinyServer(function(input, output, session) {
           session, 
           menuBarId= menuBarId,  
           entry=entry, 
+          type=type,
           submenu=menuItem(label)
         )
       }
@@ -224,9 +218,9 @@ shinyServer(function(input, output, session) {
     entry<-input$deleteTarget
     if(nchar(entry)>0){
       if(entry %in% dropdowns() ){
-        removeMenuDropdown( session, menuBarId, entry)
+        removeDMDM(session, menuBarId, entry=entry, type="dropdown")
       } else {
-        removeMenuItem( session, menuBarId, entry)
+        removeDMDM(session, menuBarId, entry=entry, type="menuItem")
       }
       df<-customMenu$childParent
       df<-removeEntries(entry, df)
@@ -239,9 +233,9 @@ shinyServer(function(input, output, session) {
     renameTo<-trimws(input$renameTo)
     if(nchar(target)>0 && nchar(renameTo)>0 && isOk(renameTo)){
       if(target %in% customMenu$childParent$parent){
-        renameMenuDropdown(session, menuBarId, target, renameTo)
+        renameDMDM(session, menuBarId, target, newLabel=renameTo, type="dropdown")
       } else {
-        renameMenuItem(session, menuBarId, target, renameTo)
+        renameDMDM(session, menuBarId, target, newLabel=renameTo, type="menuItem")
       }
       disabled<-customMenu$disabled
       df<-customMenu$childParent
