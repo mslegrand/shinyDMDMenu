@@ -66,12 +66,18 @@ updateDMDMenu<-function(session, menuBarId,
 #' @import shiny
 #' @export
 disableDMDM<-function(session, menuBarId, entry,  type="*"){
+  if(!(type %in% c("id","menuItem","dropdown","*"))){
+    stop(paste0("Invalid type ",type))
+  }
   updateDMDMenu(session, menuBarId, "disable", entry, type)
 }
 
 #' @rdname enable_disable
 #' @export
 enableDMDM<-function(session, menuBarId, entry,  type="*"){
+  if(!(type %in% c("id","menuItem","dropdown","*"))){
+    stop(paste0("Invalid type ",type))
+  }
   updateDMDMenu(session, menuBarId, "enable", entry, type)
 }
 
@@ -99,6 +105,9 @@ enableDMDM<-function(session, menuBarId, entry,  type="*"){
 #' @param newValue A new Value for the given entry.
 #' @export
 renameDMDM<-function(session, menuBarId, entry, newLabel, newValue=newLabel, type="*"){
+  if(!(type %in% c("id","menuItem","dropdown","*"))){
+    stop(paste0("Invalid type ",type))
+  }
   updateDMDMenu(session, menuBarId, 
                 command="rename",  target= entry, type=type,
                 param=c(newLabel, newValue))
@@ -164,6 +173,9 @@ removeDMDM<-function(session, menuBarId,  entry, type="*"){
 #' @import stringr
 #' @export
 insertBeforeDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
+  if(!(type %in% c("id","menuItem","dropdown","*"))){
+    stop(paste0("Invalid type ",type))
+  }
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateDMDMenu(session=session, 
                 menuBarId=menuBarId, 
@@ -203,6 +215,9 @@ insertBeforeDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
 #' @import stringr
 #' @export
 insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type){
+  if(!(type %in% c("id","menuItem","dropdown","*"))){
+    stop(paste0("Invalid type ",type))
+  }
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateDMDMenu(session=session, 
                 menuBarId=menuBarId, 
@@ -216,22 +231,22 @@ insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type){
   )
 }
 
-#' Append a new menu item or dropdown with descendants
+#' Appends a new menu item or dropdown with descendants to a dropdown or top menu bar
 #' 
 #' @param session the session 
 #' @param menuBarId the id of the menubar to be updated
-#' @param dropdown the value that was assigned to the dropdown
+#' @param entry Entry is either the value or the id that was assigned to the dropdown which is to be appended to.
 #' @param submenu  the new menu entries
-#' 
+#' @param type The type can be any of "*", "dropdown", "id"
 #' @import shiny
 #' @export
-appendDMDM<-function(session, menuBarId,  dropdown, submenu){
+appendDMDM<-function(session, menuBarId, entry, submenu, type="dropdown"){
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateDMDMenu(session=session, 
                 menuBarId=menuBarId, 
-                command="addSubmenu",
-                target=dropdown,
-                type= "dropdownList", 
+                command="appendSubmenu",
+                target=entry,
+                type=type, 
                 param=list(
                   submenu=paste(submenu, collapse=" "),
                   nid=nid

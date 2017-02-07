@@ -5,15 +5,13 @@
 
 library(stringr)
 
-newIdGen<-function(prefix="ML"){ #may remove this in the future
+gid<-(function(prefix="DMDM"){ #may remove this in the future
   idNum<-100
   function(){
     idNum<<-idNum+1
     paste0(prefix,idNum)
   }
-}
-
-gid<-newIdGen()
+})()
 
 
 mmHeader<-function(title=""){
@@ -80,7 +78,7 @@ dropDownListlabel<-function(label, id){ ### !!! should we allow a value or id sp
 dropDownListContents<-function(...){
   tag('ul', 
     list(
-      id=gid(),
+      #id=gid(),
       class='dropdown-menu',
       ...
     )
@@ -98,7 +96,7 @@ menuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value 
   value=label ### !!! should we allow a value or id specification?
   tag('li', 
     list(
-      id=gid(),
+      #id=gid(),
       class="drop-down-list",
       value=value,
       dropDownListlabel(label, id),

@@ -147,7 +147,7 @@ MultiLevelMenu=(function(){ // open object here
 
   var initializeSubMenu = function(pid, searchStr){
     //.navbar is top level, a.dropdown-toggle are subsequent levels
-    $(searchStr).find('a.dmdm-dropdown-toggle').each( function(){
+    $(searchStr).parent("li").find('a.dmdm-dropdown-toggle').each( function(){
       $(this).on('click', function(e) {
           var $el2 = $(this);
           var $parent = $(this).offsetParent(".dropdown-menu");
@@ -167,6 +167,8 @@ MultiLevelMenu=(function(){ // open object here
         });
     });
   };
+  
+  
   
   
   return{
@@ -201,20 +203,42 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   if(type=='menuItem'){
     srchStr=".dmdMenuItem[value='" + target + "']";
   }
-  if(type=='dropdownList'){ // used to append submenu to dropdown
-    srchStr="li.drop-down-list[value='"+target+"']"+">.dropdown-menu";
-  }
-  if(target=='_'){ //kludge to add to top navbar
-    srchStr="ul.nav.navbar-nav";
-    cmd="addSubmenu";
-    type=='dropdownList';
-  }
+  //if(type=='dropdownList'){ // used to append submenu to dropdown
+  //  srchStr="li.drop-down-list[value='"+target+"']"+">.dropdown-menu";
+  //}
+  
   if(type=='*'){
     srchStr=".dmdMenuItem[value='" + target + "'], " +
     "a.dmdm-dropdown-toggle[value='" + target + "']";
   }
   
+  if(target=='_'){ //kludge to add to top navbar (ignore type)
+    srchStr="ul.nav.navbar-nav";
+    cmd="appendSubmenuToBar";
+  }
   
+  
+  
+  if(cmd=="disable"){ //type is irrelavant
+    $el.find(srchStr).each(function(){
+      if($(this).hasClass("dmdMenuItem")){
+        if(!$(this).hasClass("disabled")){
+          $(this).prop("disabled", true);
+          $(this).addClass("disabled");
+          $(this).off("click");          
+        }
+      } else {
+        if( ! $(this).parent("li").hasClass("disabled") ){
+          $(this).off('click');
+          $(this).prop("disabled", true);
+          $(this).parent("li").addClass("disabled");
+        }        
+      }
+    })
+  }
+    
+  
+/*
   if(cmd=="disable" && type=='menuItem'){
     if( ! $el.find(srchStr).hasClass("disabled") ){
       //console.log( "disabling");
@@ -224,6 +248,48 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     }
   }
   
+  if(cmd=="disable" && type=='dropdown'){
+    if( ! $el.find(srchStr).parent("li").hasClass("disabled") ){
+      $el.find(srchStr).off('click');
+      $el.find(srchStr).prop("disabled", true);
+      $el.find(srchStr).parent("li").addClass("disabled");
+    }
+  }
+
+*/
+
+
+  if(cmd=="enable"){
+    $el.find(srchStr).each(function(){
+      if($(this).hasClass("dmdMenuItem")){
+        if( $(this).hasClass("disabled") ){
+          //console.log( "enabling");
+          $(this).prop("disabled", false);
+          $(this).removeClass("disabled");
+          $(this).on('click',function(evt){ 
+            $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
+          });
+        }
+      } else {
+        if( $(this).parent("li").hasClass("disabled") ){
+          $(this).prop("disabled", false);
+          $(this).parent("li").removeClass("disabled");
+          $(this).on('click',function(evt) {
+            var $el = $(this);
+            var $parent = $(this).offsetParent(".dropdown-menu");
+            $(this).parent("li").toggleClass('open');
+            if(!$parent.parent().hasClass('nav')) {
+              $el.next().css({"top": $el[0].offsetTop, "left": $parent.outerWidth() - 4});
+            }
+            $('.nav li.open').not($(this).parents("li")).removeClass("open");
+            return false;
+          });
+        }
+      }
+    });
+  }
+  
+/*  
   if(cmd=="enable" && type=='menuItem'){
     if( $el.find(srchStr).hasClass("disabled") ){
       //console.log( "enabling");
@@ -232,14 +298,6 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       $el.find(srchStr).on('click',function(evt){ 
             $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
       });
-    }
-  }
-  
-  if(cmd=="disable" && type=='dropdown'){
-    if( ! $el.find(srchStr).parent("li").hasClass("disabled") ){
-      $el.find(srchStr).off('click');
-      $el.find(srchStr).prop("disabled", true);
-      $el.find(srchStr).parent("li").addClass("disabled");
     }
   }
   
@@ -259,7 +317,16 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       });
     }
   }
-  
+*/
+
+  if(cmd=="rename" ){
+    if(data.param && data.param.length>1) {
+      //console.log("rename item to" +data.param[0]);
+      $el.find(srchStr).text(data.param[0]);
+      $el.find(srchStr).attr("value", data.param[1]);
+    }
+  }
+/*
   if(cmd=="rename" && type=='menuItem'){
     if(data.param && data.param.length>1) {
       //console.log("rename item to" +data.param[0]);
@@ -275,16 +342,24 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       $el.find(srchStr).attr("value", data.param[1]);
     }
   }
+*/  
   
-  
+  if(cmd=="delete" ){
+    //console.log(srchStr);
+    //console.log($el.find(srchStr).parent());
+    $el.find(srchStr).parent().empty();
+  }
 
+/*
   if(cmd=="delete" && ( type=='menuItem' || type=='dropdown')){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
     $el.find(srchStr).parent().empty();
   }
-  
-  if(cmd=="after" && ( type=='menuItem' || type=='dropdown')){
+*/
+
+
+  if(cmd=="after" ){
     //console.log(srchStr);
     //console.log($el.find(srchStr).parent());
     if(data.param) {
@@ -293,7 +368,32 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       MultiLevelMenu.initSubMenu(id, nid);
     }
   }
+  /*
+  if(cmd=="after" && ( type=='menuItem' || type=='dropdown')){
+    //console.log(srchStr);
+    //console.log($el.find(srchStr).parent());
+    if(data.param) {
+      nid = '#' + data.param.nid;
+      $el.find(srchStr).parent().after( $("" + data.param.submenu));
+      MultiLevelMenu.initSubMenu(id, nid);
+    }
+  }*/
   
+  
+   if(cmd=="before"){
+    //console.log(type);
+    //console.log(srchStr);
+    //console.log('parent');
+    //console.log($el.find(srchStr).parent());
+    if(data.param) {
+      nid = '#' + data.param.nid;
+      $el.find(srchStr).parent().before( $("" + data.param.submenu));
+      
+      MultiLevelMenu.initSubMenu(id, nid);
+    }
+  }
+  
+  /*
   if(cmd=="before" && ( type=='menuItem' || type=='dropdown')){
     //console.log(type);
     //console.log(srchStr);
@@ -306,13 +406,26 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
       MultiLevelMenu.initSubMenu(id, nid);
     }
   }
-
+  */
+  
   //need to add submenu
-  if(cmd=="addSubmenu" && type=='dropdownList'){
+  
+  if(cmd=="appendSubmenuToBar"){
     if(data.param) {
       nid = '#' + data.param.nid;
       //console.log(nid);
       $el.find(srchStr).append( $("" + data.param.submenu));
+      MultiLevelMenu.initSubMenu(id, nid);
+    }
+  }
+  
+  
+  if(cmd=="appendSubmenu" ){
+    if(data.param) {
+      nid = '#' + data.param.nid;
+      $el.find(srchStr).each( function(){
+        $(this).next("ul.dropdown-menu").append( $("" + data.param.submenu));
+      });
       MultiLevelMenu.initSubMenu(id, nid);
     }
   }
