@@ -214,7 +214,7 @@ insertBeforeDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
 #' @import shiny
 #' @import stringr
 #' @export
-insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type){
+insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
   if(!(type %in% c("id","menuItem","dropdown","*"))){
     stop(paste0("Invalid type ",type))
   }
