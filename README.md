@@ -5,7 +5,7 @@ This package provides a plugin to create a dynamic menubar capable of multiple l
 multi-level menus, menu items and dropdowns can be
 
 - dynamically added and removed
-- dynamically diabled and enabled
+- dynamically disabled and enabled
 - dynamically renamed.
 
 
