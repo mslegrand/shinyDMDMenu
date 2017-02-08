@@ -67,6 +67,7 @@ $.extend(dmdmBinding, {
   receiveMessage: function(el, data) {
     if (data.hasOwnProperty('reset')){
       var nindx = parseInt($(el).attr("indx"));
+      $(el).attr('value',null);
       $(el).attr('indx', nindx+1 ) ;
     }
   },
