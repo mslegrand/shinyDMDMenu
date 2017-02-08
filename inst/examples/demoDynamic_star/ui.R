@@ -19,7 +19,7 @@ shinyUI(fluidPage(
   div(style="margin-bottom:50px",
       dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
                         theme=shinytheme( "united" ),
-                        id=menuBarId,
+                          menuBarId=menuBarId,
                           menuDropdown(
                             "Dropdown 1", id='demoDMDM002',
                             menuItem("menu 1-1", id='demoDMDM004'),

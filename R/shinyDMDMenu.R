@@ -50,7 +50,7 @@ lineDivider<-function(){
 #' @param id optional id (can be used for selecting)
 #' @import shiny
 #' @export
-menuItem<-function(  label, value=label, id=gid() ){  
+menuItem<-function(label, value=label, id=gid() ){  
   href='#'
   if(missing(label)){
     stop("label not provided")
@@ -58,7 +58,6 @@ menuItem<-function(  label, value=label, id=gid() ){
   if(missing(value)){
     value=label
   }
-  
   tag('li', 
     list(a(href=href, id=id, value=value,
            class='dmdMenuItem', label))
@@ -109,15 +108,15 @@ menuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value 
 #' 
 #' @param title (optional) the title of the menubar
 #' @param ... any number of menu items or dropdowns
-#' @param id the id to be associated with this menubar
+#' @param menuBarId the id to be associated with this menubar
 #' @param theme the name of a shiny bootstrap theme. (requires shinythemes package)
 #' @import shiny
 #' @export
-dmdMenuBarPage<-function(..., title="", id=NULL, theme=NULL){
-  if(is.null(id)){
-    stop("id should not be null")
+dmdMenuBarPage<-function(..., title="", menuBarId=NULL, theme=NULL){
+  if(is.null(menuBarId)){
+    stop("menuBarId should not be null")
   }
-  pid=id
+  pid=menuBarId
   mmCollapse<-function(pid,...){
     div(
       class='collapse navbar-collapse',
@@ -141,7 +140,7 @@ dmdMenuBarPage<-function(..., title="", id=NULL, theme=NULL){
       tags$link(rel = "stylesheet", type = "text/css", href ="shinyDMDMenu/shinyDMDMenu.css" )
     )), 
     div(
-      id=id,
+      id=menuBarId,
       class="mm-menubar navbar navbar-default navbar-fixed-top",
       role="navigation",
       pid=pid,

@@ -18,20 +18,20 @@ shinyUI(fluidPage(
     tags$style(HTML("div.well{padding-top:10px; padding-bottom:0;}")
   )),
   div(style="margin-bottom:50px",
-      dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
-                        theme=shinytheme( "united" ),
-                        id=menuBarId,
-                          menuDropdown(
-                            "Dropdown 1",
-                            menuItem("menu 1-1"),
-                            menuItem("menu 1-2"),
-                            menuDropdown("Dropdown 2",
-                                    menuItem("menu 2-1"),
-                                    menuItem("menu 2-2"),
-                                    menuItem("menu 2-3")
-                                    )
-                          ),
-                          menuItem("menu 2")
+    dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
+      theme=shinytheme( "united" ),
+      menuBarId=menuBarId,
+      menuDropdown(
+        "Dropdown 1",
+        menuItem("menu 1-1"),
+        menuItem("menu 1-2"),
+        menuDropdown("Dropdown 2",
+                menuItem("menu 2-1"),
+                menuItem("menu 2-2"),
+                menuItem("menu 2-3")
+                )
+      ),
+      menuItem("menu 2")
   )),
   sidebarLayout(
     sidebarPanel(
