@@ -101,8 +101,8 @@ enableDMDM<-function(session, menuBarId, entry,  type="*"){
 #' \item{if type=="*"}{combines both types \emph{menuItem} and \emph{dropdown} to search for the target element}
 #' } 
 #' the default for type is "*"
-#' @param newLabel A new Label for the given entry.
-#' @param newValue A new Value for the given entry.
+#' @param newLabel A null value or new Label for the given entry. A null value for newLabel, will leave the label unchanged.
+#' @param newValue A null value or new Value for the given entry. The default value is newLabel. A null value for newLabel, will leave the label unchanged.
 #' @export
 renameDMDM<-function(session, menuBarId, entry, newLabel, newValue=newLabel, type="*"){
   if(!(type %in% c("id","menuItem","dropdown","*"))){
@@ -110,7 +110,7 @@ renameDMDM<-function(session, menuBarId, entry, newLabel, newValue=newLabel, typ
   }
   updateDMDMenu(session, menuBarId, 
                 command="rename",  target= entry, type=type,
-                param=c(newLabel, newValue))
+                param=list(newLabel=newLabel, newValue=newValue))
 } 
 
 

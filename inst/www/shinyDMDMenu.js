@@ -321,10 +321,14 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
 */
 
   if(cmd=="rename" ){
-    if(data.param && data.param.length>1) {
+    if(data.param) {
       //console.log("rename item to" +data.param[0]);
-      $el.find(srchStr).text(data.param[0]);
-      $el.find(srchStr).attr("value", data.param[1]);
+      if(data.param.newLabel){
+        $el.find(srchStr).text(data.param.newLabel);
+      }
+      if(data.param.newValue){
+        $el.find(srchStr).attr("value", data.param.newValue);
+      }
     }
   }
 /*

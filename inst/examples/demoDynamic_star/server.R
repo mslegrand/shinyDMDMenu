@@ -217,7 +217,10 @@ shinyServer(function(input, output, session) {
     target<-trimws(input$renameTarget)
     renameTo<-trimws(input$renameTo)
     if(nchar(target)>0 && nchar(renameTo)>0 && isOk(renameTo)){
-      renameDMDM(session, menuBarId, target, newLabel=renameTo)
+      newLabel=paste("label:",renameTo)
+      newValue=paste("value:", renameTo)
+      renameDMDM(session, menuBarId, target, 
+                 newLabel=newLabel, newValue = newValue)
       disabled<-customMenu$disabled
       df<-customMenu$childParent
       disabled<-gsub(target,renameTo, disabled)
