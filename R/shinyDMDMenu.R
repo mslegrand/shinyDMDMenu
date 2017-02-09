@@ -149,7 +149,7 @@ dmdMenuBarPage<-function(..., title="", menuBarId=NULL, theme=NULL){
       div(
         class= 'row text-nowrap', #'row', #'container'
         mmHeader(title),
-        mmCollapse(pid=id, ...)
+        mmCollapse(pid=menuBarId, ...)
       )
     ) 
   )
