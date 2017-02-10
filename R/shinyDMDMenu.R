@@ -36,11 +36,12 @@ mmHeader<-function(title=""){
 
 #' Creates a menu seperator
 #' 
+#' @param id (optional)
 #' @return a menu seperator
 #' @import shiny
 #' @export
-lineDivider<-function(){
-  tag('li', list(class='divider'))
+menuDivider<-function( id=gid() ){
+  tag('li', list(id=id, class='divider'))
 }
 
 #' Creates a menu  item
@@ -51,7 +52,7 @@ lineDivider<-function(){
 #' @import shiny
 #' @export
 menuItem<-function(label, value=label, id=gid() ){  
-  href='#'
+  href="#"
   if(missing(label)){
     stop("label not provided")
   }
