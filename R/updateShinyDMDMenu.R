@@ -1,5 +1,6 @@
 #--------------updates------------------------------------
 
+
 #' dirty the menu 
 #' 
 #' @param session the session
@@ -7,8 +8,9 @@
 #' @import shiny
 #' @export
 dirtyDMDM<-function(session, menuBarId){
-  message<-list(reset="true")
-  session$sendInputMessage(menuBarId, message)
+  #message<-list(reset="true")
+  #session$sendInputMessage(menuBarId, message)
+  updateDMDMenu(session, menuBarId=menuBarId, command='reset', target="", type="")
 }
 
 #' Update the Menu
@@ -253,7 +255,4 @@ appendDMDM<-function(session, menuBarId, entry, submenu, type="dropdown"){
                 )
   )
 }
-
-
-
 
