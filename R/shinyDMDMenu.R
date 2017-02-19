@@ -30,7 +30,7 @@ mmHeader<-function(title=""){
         )
     ),
     if(title!="")
-      a( class='navbar-brand', href="#",title)
+      a( class='navbar-brand',title)
   )  
 }
 
@@ -49,10 +49,12 @@ menuDivider<-function( id=gid() ){
 #' @param label the displayed label for the menu item
 #' @param value return value upon clicking
 #' @param id optional id (can be used for selecting)
+#' @param ... optional attributes or elements
 #' @import shiny
 #' @export
-menuItem<-function(label, value=label, id=gid() ){  
-  href="#"
+menuItem<-function(label, ..., value=label, id=gid() ){  
+
+  
   if(missing(label)){
     stop("label not provided")
   }
@@ -60,17 +62,17 @@ menuItem<-function(label, value=label, id=gid() ){
     value=label
   }
   tag('li', 
-    list(a(href=href, id=id, value=value,
+    list(a(..., id=id, value=value,
            class='dmdMenuItem', label))
   )
 } 
 
 dropDownListlabel<-function(label, id){ ### !!! should we allow a value or id specification?
-  a(href='#', id=id  ,
+  a( id=id  ,
     class="dropdown-toggle dmdm-dropdown-toggle",
     "data-toggle"="dropdown",
     value=label, 
-    label,
+    label, 
     tag('b', list(class='caret'))
   )
 }
@@ -142,7 +144,7 @@ dmdMenuBarPage<-function(..., title="", menuBarId=NULL, theme=NULL){
     )), 
     div(
       id=menuBarId,
-      class="mm-menubar navbar navbar-default navbar-fixed-top",
+      class="mm-menubar navbar navbar-default navbar-static-top",
       role="navigation",
       pid=pid,
       style = "padding-left:20px; padding-top:0px; height: 40px;",
