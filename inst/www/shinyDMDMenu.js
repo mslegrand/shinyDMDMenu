@@ -146,15 +146,13 @@ shinyDMDMenu=(function(){ // open object here
       
       //trigger change at top-level on message from child dmdMenuItem
       $(this).on("mssg", function(evt, param){
-        console.log("received .mm-menubar mssg:" + param + ":");
+        //console.log("received .mm-menubar mssg:" + param + ":");
         $(this).attr("value", param);
-        console.log("received .mm-menubar value:" + $(this).attr("value") + ":");
-        if($(this).attr("value")=="close"){
-            window.close();
-        } else {
-          $(this).trigger("change");
+        //console.log("received .mm-menubar value:" + $(this).attr("value") + ":");
+       
+        $(this).trigger("change");
         }
-      });
+      );
       
       //add trigger to send message from child dmdMenuItem
       $(this).find(".dmdMenuItem").each( function(){
