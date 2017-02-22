@@ -141,7 +141,6 @@ shinyDMDMenu=(function(){ // open object here
     //iterate over .mm-menubar (top levels)
     $(".mm-menubar").each(function(){ 
       //console.log('initializeMenu .mm-menubar');
-      //pid=$(this).attr("id"); //not needed if we bubble
       $(this).attr("indx",0); //initialization
       
       //trigger change at top-level on message from child dmdMenuItem
@@ -157,10 +156,9 @@ shinyDMDMenu=(function(){ // open object here
       //add trigger to send message from child dmdMenuItem
       $(this).find(".dmdMenuItem").each( function(){
         //console.log('initializeMenu .dmdMenuItem');
-        //$(this).attr("aid",pid);
+        
         $(this).on('click',function(evt){ 
           $(this).trigger( "mssg", [$(this).attr("value")] ); //just let it bubble
-          //$("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
         });
       });
     });
@@ -246,7 +244,7 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
           $(this).prop("disabled", false);
           $(this).removeClass("disabled");
           $(this).on('click',function(evt){ 
-          $("#" + $(this).attr("aid")).trigger( "mssg", [$(this).attr("value")] ); 
+            $(this).trigger( "mssg", [$(this).attr("value")] ); //just let it bubble 
           });
         }
       } else {
