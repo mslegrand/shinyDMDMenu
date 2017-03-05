@@ -1,4 +1,6 @@
 
+// read http://oddhypothesis.blogspot.com/2015/10/paging-widget-for-shiny-apps.html for usage example for  receiveMessage and initialize
+
 (function(){ 
   
 var dmdmBinding = new Shiny.InputBinding();
@@ -22,9 +24,53 @@ $.extend(dmdmBinding, {
     });
   },
   
+  receiveMessage: function(el, data) {}, //to avoid exception
+  
   unsubscribe: function(el) {
     $(el).off(".dmdmBinding");
   }, 
+ 
+ //initialization 
+ initialize: function initialize(el) {
+  var $el = $(el);
+  $el.attr("indx",0); 
+  
+  //trigger change at top-level on message from child dmdMenuItem
+  $el.on("mssg", function(evt, param){
+    $(this).attr("value", param);
+    $(this).trigger("change");
+    }
+  );
+    
+  $el.find('a.dmdm-dropdown-toggle').each( function(){
+    $(this).on('click', function(e){
+      var $parent = $(this).offsetParent(".dropdown-menu");
+      $(this).parent("li").toggleClass('open');
+      if(!$parent.parent().hasClass('nav')) {
+        $(this).next().css(
+          {
+            "top": $(this)[0].offsetTop, 
+            "left": $parent.outerWidth() - 4
+            
+          }
+        );
+      }
+      $('.nav li.open').not($(this).parents("li")).removeClass("open");
+      return false;
+    });
+  });
+    
+  $el.find(".dmdMenuItem").each( function(){
+    $(this).on('click',function(evt){ 
+      console.log("click");
+      console.log($(this).attr("value"));
+      $(this).trigger( "mssg", [$(this).attr("value")] ); 
+      //just let it bubble
+    });
+  });
+  //end of initializeMenu 
+ },
+ 
  
   getRatePolicy: function(el){
     if (!el){
@@ -95,85 +141,36 @@ shinyDMDMenu=(function(){ // open object here
      }
   };
 
-  var initializeSubMenu = function(pid, searchStr){
+  var initializeSubMenu = function(pid, el){
     //.navbar is top level, a.dropdown-toggle are subsequent levels
-    $(searchStr).parent("li").find('a.dmdm-dropdown-toggle').each( function(){
+    $(el).parent("li").find('a.dmdm-dropdown-toggle').each( function(){
       $(this).on('click', function(e) {
-          var $el2 = $(this);
-          var $parent = $(this).offsetParent(".dropdown-menu");
-          $(this).parent("li").toggleClass('open');
-          if(!$parent.parent().hasClass('nav')) {
-            $el2.next().css({"top": $el2[0].offsetTop, "left": $parent.outerWidth() - 4});
-          }
-          $('.nav li.open').not($(this).parents("li")).removeClass("open");
-          return false;
+        var $parent = $(this).offsetParent(".dropdown-menu");
+        $(this).parent("li").toggleClass('open');
+        if(!$parent.parent().hasClass('nav')) {
+          $(this).next().css(
+            {"top": $(this)[0].offsetTop, "left": $parent.outerWidth() - 4}
+          );
+        }
+        $('.nav li.open').not($(this).parents("li")).removeClass("open");
+        return false;
       });
     });
     //add trigger to send message from child dmdMenuItem
-    $(searchStr).parent().find(".dmdMenuItem").each( function(){
-        $(this).on('click',function(evt){ 
-          $(this).trigger( "mssg", [$(this).attr("value")] ); 
-        });
-    });
-  };
-  
-  var initializeMenu = function(){
-    var pid;
-    console.log('initializeMenu');
-    //.navbar is top level, a.dropdown-toggle are subsequent levels
-    //iterate over all
-    $('.mm-menubar a.dmdm-dropdown-toggle').on('click', function(e) {
-      var $el2 = $(this);
-      var $parent = $(this).offsetParent(".dropdown-menu");
-      console.log('onclick .mm-menuba a.dmdm-dropdown-toggle');
-      $(this).parent("li").toggleClass('open');
-      if(!$parent.parent().hasClass('nav')) {
-        $el2.next().css(
-          {
-            "top": $el2[0].offsetTop, 
-            "left": $parent.outerWidth() - 4}
-        );
-      }
-      $('.nav li.open').not($(this).parents("li")).removeClass("open");
-      return false;
-    });
-  
-    //iterate over .mm-menubar (top levels)
-    $(".mm-menubar").each(function(){ 
-      //console.log('initializeMenu .mm-menubar');
-      $(this).attr("indx",0); //initialization
-      
-      //trigger change at top-level on message from child dmdMenuItem
-      $(this).on("mssg", function(evt, param){
-        //console.log("received .mm-menubar mssg:" + param + ":");
-        $(this).attr("value", param);
-        //console.log("received .mm-menubar value:" + $(this).attr("value") + ":");
-       
-        $(this).trigger("change");
-        }
-      );
-      
-      //add trigger to send message from child dmdMenuItem
-      $(this).find(".dmdMenuItem").each( function(){
-        //console.log('initializeMenu .dmdMenuItem');
-        
-        $(this).on('click',function(evt){ 
-          $(this).trigger( "mssg", [$(this).attr("value")] ); //just let it bubble
-        });
+    $(el).parent().find(".dmdMenuItem").each( function(){
+      $(this).on('click',function(evt){ 
+        $(this).trigger( "mssg", [$(this).attr("value")] ); 
       });
     });
-  }; //end of initializeMenu
+  };
 
-  
   return{
-    initializeMenu: initializeMenu,
     initSubMenu: initializeSubMenu,
     reinitBootStrap: reinitBootStrap
   };
 })();
 
 $(document).ready(function(){
-  shinyDMDMenu.initializeMenu();
   shinyDMDMenu.reinitBootStrap();
 });
 
@@ -188,8 +185,6 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   
   var srchStr="";
   var nid=null;
-  
-  //console.log(cmd);
   
 // searchStr points to the node of the newly created submenu
   if(type==="id" && data.id!==target){
@@ -268,7 +263,6 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   
   if(cmd=="rename" ){
     if(data.param) {
-      //console.log("rename item to" +data.param[0]);
       if(data.param.newLabel){
         $el.find(srchStr).text(data.param.newLabel);
       }
@@ -279,14 +273,10 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   }
 
   if(cmd=="delete" ){
-    //console.log(srchStr);
-    //console.log($el.find(srchStr).parent());
     $el.find(srchStr).parent().empty();
   }
 
   if(cmd=="after" ){
-    //console.log(srchStr);
-    //console.log($el.find(srchStr).parent());
     if(data.param) {
       nid = '#' + data.param.nid;
       $el.find(srchStr).parent().after( $("" + data.param.submenu));
@@ -306,7 +296,6 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
   if(cmd=="appendSubmenuToBar"){
     if(data.param) {
       nid = '#' + data.param.nid;
-      //console.log(nid);
       $el.find(srchStr).append( $("" + data.param.submenu));
       shinyDMDMenu.initSubMenu(id, nid);
     }
