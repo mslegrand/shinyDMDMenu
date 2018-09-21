@@ -62,8 +62,8 @@ $.extend(dmdmBinding, {
     
   $el.find(".dmdMenuItem").each( function(){
     $(this).on('click',function(evt){ 
-      console.log("click");
-      console.log($(this).attr("value"));
+      //console.log("click");
+      //console.log($(this).attr("value"));
       $(this).trigger( "mssg", [$(this).attr("value")] ); 
       //just let it bubble
     });

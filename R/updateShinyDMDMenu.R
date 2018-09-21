@@ -178,6 +178,7 @@ insertBeforeDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
   if(!(type %in% c("id","menuItem","dropdown","*"))){
     stop(paste0("Invalid type ",type))
   }
+  submenu<-paste(submenu, collapse=" ")
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateDMDMenu(session=session, 
                 menuBarId=menuBarId, 
@@ -185,7 +186,7 @@ insertBeforeDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
                 target=entry,
                 type= type, 
                 param=list(
-                  submenu=paste(submenu, collapse=" "),
+                  submenu=submenu,
                   nid=nid
                 )
   )
@@ -220,6 +221,7 @@ insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
   if(!(type %in% c("id","menuItem","dropdown","*"))){
     stop(paste0("Invalid type ",type))
   }
+  submenu<-paste(submenu, collapse=" ")
   nid<-str_match(submenu, regex('id="([:alnum:]+)"'))[,2]
   updateDMDMenu(session=session, 
                 menuBarId=menuBarId, 
@@ -227,7 +229,7 @@ insertAfterDMDM<-function(session, menuBarId,  entry, submenu, type="*"){
                 target=entry,
                 type= type, 
                 param=list(
-                  submenu=paste(submenu, collapse=" "),
+                  submenu=submenu,
                   nid=nid
                 )
   )
