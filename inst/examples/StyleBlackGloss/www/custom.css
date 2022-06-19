@@ -4,6 +4,19 @@ This inherits from the default bootstrap style
  an existing style and modify it.
 */
 
+span.dmdm-dropdown-toggle{
+  color: #5D5D5D;
+  font-weight: normal;
+  padding-left: 20px;
+}
+.drop-down-list:hover{
+  background-color: #EEEEEE;
+  font-weight: normal;
+}
+ul.nav > .drop-down-list:hover{
+  background-color: transparent;
+  font-weight: bold;
+}
 
 .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-brand:focus {
@@ -12,15 +25,16 @@ This inherits from the default bootstrap style
 .navbar-default .navbar-brand {
   color: #BBBBFF;
 }
-.navbar .nav > li > a {
+
+.navbar .nav > li > a{
   color: #BBBBFF;
 }
-.navbar .nav > li > a:hover {
+.navbar .nav > li > a:hover{
   float: none;
   color: #FFFFFF;
-    background-color: transparent;
+  background-color: transparent;
 }
-.navbar-default .navbar-nav > li > a:focus {
+.navbar-default .navbar-nav > li > a:focus{
   color: white;
   background-color: transparent;
 }
@@ -33,6 +47,8 @@ This inherits from the default bootstrap style
   opacity: 0.5;
 }
 .navbar {
+  white-space: nowrap;
+  text-overflow: clip;
   color: #BBBBBB;
   border-color: black;
   font-weight: bold;
@@ -56,7 +72,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
     cursor: not-allowed !important;
   border-color: #888 !important;
 }
-.nav li.disabled .a {
+.nav li.disabled a{
+  color: #888 !important;
+}
+.nav li.disabled span{
   color: #888 !important;
 }
 .nav li.disabled.dropdown a{
@@ -65,4 +84,4 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', end
 .nav li.disabled.drop-down-list a{
   color: #888 !important;
 }
-
+body {background-color: coral;}

@@ -12,19 +12,22 @@ library(shinythemes)
 
 
 shinyUI(fluidPage(
+  singleton( tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href ="custom.css" )
+  )),
   tags$head(
     tags$script('Shiny.addCustomMessageHandler("showClick",function(message) {alert(JSON.stringify(message));}); '),
     tags$style(HTML("div.well{padding-top:10px; padding-bottom:0;}")
   )),
   div(style="margin-bottom:50px",
-      dmdMenuBarPage( title='Main Menu: (A Dynamic Multi-level Dropdown Menu)',
+      dmdMenuBarPage( title='Main Menu: (Demo Star: A Dynamic Multi-level Dropdown Menu)',
                         theme=shinytheme( "united" ),
                           menuBarId=menuBarId,
                           menuDropdown(
                             "Dropdown 1", id='demoDMDM002',
                             menuItem("menu 1-1", id='demoDMDM004'),
                             menuItem("menu 1-2", id='demoDMDM004'),
-                            menuDropdown("Dropdown 2", id= 'demoDMDM003',
+                            subMenuDropdown("Dropdown 2", id= 'demoDMDM003',
                                     menuItem("menu 2-1", id='demoDMDM007'),
                                     menuItem("menu 2-2", id='demoDMDM008'),
                                     menuItem("menu 2-3", id='demoDMDM009')

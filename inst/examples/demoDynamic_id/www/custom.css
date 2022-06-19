@@ -1,0 +1,18 @@
+/* 
+This inherits from the default bootstrap style
+ for a complete new style, a good strategy is to take
+ an existing style and modify it.
+*/
+span.dmdm-dropdown-toggle{
+  color: #5D5D5D;
+  font-weight: normal;
+  padding-left: 20px;
+}
+.drop-down-list:hover{
+  background-color: #E95420;
+  font-weight: normal;
+}
+ul.nav > .drop-down-list:hover{
+  background-color: transparent;
+  font-weight: bold;
+}

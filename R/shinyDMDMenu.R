@@ -67,15 +67,27 @@ menuItem<-function(label, ..., value=label, id=gid() ){
   )
 } 
 
-dropDownListlabel<-function(label, id){ ### !!! should we allow a value or id specification?
-  a( id=id  ,
-    class="dropdown-toggle dmdm-dropdown-toggle",
-    "data-toggle"="dropdown",
-    value=label, 
-    label, 
-    tag('b', list(class='caret'))
-  )
+dropDownListlabel<-function(label, id, type='a'){ ### !!! should we allow a value or id specification?
+  if(type=='a'){
+    a( id=id  ,
+       class="dropdown-toggle dmdm-dropdown-toggle",
+       "data-toggle"="dropdown",
+       value=label, 
+       label, 
+       tag('b', list(class='caret'))
+    )
+  } else {
+    span( id=id  ,
+       class="dropdown-toggle dmdm-dropdown-toggle",
+       "data-toggle"="dropdown",
+       value=label, 
+       label, 
+       tag('b', list(class='caret'))
+    )
+  }
+  
 }
+
 
 dropDownListContents<-function(...){
   tag('ul', 
@@ -104,6 +116,26 @@ menuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value 
       dropDownListlabel(label, id),
       dropDownListContents(...) 
     )
+  )
+}
+
+#' Create a submenu drop-down menu
+#' 
+#' @param label the label of the drop down
+#' @param ... any number of menu items or dropdowns
+#' @param id  id of the element (optional, can be used for selection)
+#' @import shiny
+#' @export
+subMenuDropdown<-function(label,  ..., id=gid() ){ ### !!! should we allow a value or id specification?
+  value=label ### !!! should we allow a value or id specification?
+  tag('li', 
+      list(
+        #id=gid(),
+        class="drop-down-list",
+        value=value,
+        dropDownListlabel(label, id, type='span'),
+        dropDownListContents(...) 
+      )
   )
 }
 

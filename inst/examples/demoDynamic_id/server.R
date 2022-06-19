@@ -12,8 +12,8 @@ shinyServer(function(input, output, session) {
   
   customMenu<-reactiveValues( 
     childParent=data.frame(
-      child=c('menu 1-1','menu 1-2', 'menu 2', 'Dropdown 2', 'menu 2-1','menu 2-2', 'menu 2-3'),
-      parent=c('Dropdown 1','Dropdown 1', '_', 'Dropdown 1', 'Dropdown 2', 'Dropdown 2', 'Dropdown 2'),
+      child=c('Dropdown 1', 'menu 1-1','menu 1-2', 'menu 2', 'Dropdown 2', 'menu 2-1','menu 2-2', 'menu 2-3'),
+      parent=c('_', 'Dropdown 1','Dropdown 1', '_', 'Dropdown 1', 'Dropdown 2', 'Dropdown 2', 'Dropdown 2'),
       stringsAsFactors=FALSE
     ),
     titleId=data.frame(
@@ -120,6 +120,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$appendToEvent,{
     dropdown<-trimws(input$droppdownTarget)
+    if(dropdown=='_'){ #don't append to nav bar, 
+      return
+    }
     label<-trimws(input$level1)
     if(nchar(dropdown)>0 && nchar(label)>0 && isOk(label)){
       addNewEntry(label)
@@ -148,7 +151,7 @@ shinyServer(function(input, output, session) {
           type="id",
           submenu=
             do.call(
-              function(...){ menuDropdown(label,..., id=labelId) },
+              function(...){ subMenuDropdown(label,..., id=labelId) },
               lapply(kids, function(k){
                   menuItem(k,id=getId(k))
                 })
@@ -177,7 +180,7 @@ shinyServer(function(input, output, session) {
       }else{
         insertAfterDMDM
       }
-      type<-ifelse( (entry %in% dropdowns() ), "dropdown", "menuItem")
+      # type<-ifelse( (entry %in% dropdowns() ), "dropdown", "menuItem")
       #add id for parent
       
       addNewEntry(label)
@@ -193,16 +196,22 @@ shinyServer(function(input, output, session) {
           hasKids<-TRUE
         }
       }
-      if(hasKids){
+      if(!hasKids){
+        submenu=menuItem(label, id=labelId)
+      } else {
         lapply(kids, function(k){
           addChildParent(k,label)
           addNewEntry(k)
         })
-        insertFn(
-          session, 
-          menuBarId= menuBarId,  
-          entry=entryId,
-          type="id",
+        if(parent!='_'){ #parent is not nav
+          submenu=
+            do.call(
+              function(...){ subMenuDropdown(label,id=labelId, ...) },
+              lapply(kids, function(k){
+                menuItem(k, id=getId(k))
+              })
+            )
+        } else { #parent is  nav
           submenu=
             do.call(
               function(...){ menuDropdown(label,id=labelId, ...) },
@@ -210,16 +219,18 @@ shinyServer(function(input, output, session) {
                 menuItem(k, id=getId(k))
               })
             )
-        )
-      } else {
-        insertFn(
-          session, 
-          menuBarId= menuBarId,  
-          entry=entryId, 
-          type="id",
-          submenu=menuItem(label, id=labelId)
-        )
+        }
       }
+      insertFn(
+        session, 
+        menuBarId= menuBarId,  
+        entry=entryId, 
+        type="id",
+        submenu=submenu
+      )
+      
+      
+      
       addChildParent(label,parent)
     }
     

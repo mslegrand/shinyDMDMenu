@@ -27,30 +27,30 @@ shinyUI(fluidPage(
     ),
     menuDropdown(
      "Great Men",
-     menuDropdown("China",
-        menuDropdown("Xian",
+     subMenuDropdown("China",
+        subMenuDropdown("Xian",
           menuItem("Kungfu Panda")
         ),
-        menuDropdown("Hongkong",
+        subMenuDropdown("Hongkong",
           menuItem("Bruce Lee")
         )
      ),
-     menuDropdown("UnitedStates",
-          menuDropdown("Califoria",
+     subMenuDropdown("UnitedStates",
+          subMenuDropdown("Califoria",
             menuItem("Howard Hughes"),
             menuItem("Grateful Dead"),
             menuItem("Mickey Mouse")
           ),
-          menuDropdown("Illinois",
+          subMenuDropdown("Illinois",
             menuItem("Abe Lincoln"),
             menuItem("Al Capone")
           )
      ),
-     menuDropdown(
+     subMenuDropdown(
        "United Kingdom",
        menuItem("Ireland"),
        menuItem("Scotland"),
-       menuDropdown("England",
+       subMenuDropdown("England",
                     menuItem("Shakespear"),
                     menuItem("Sherlock Holmes"),
                     menuItem("Dr. Who")

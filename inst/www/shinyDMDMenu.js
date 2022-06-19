@@ -42,7 +42,7 @@ $.extend(dmdmBinding, {
     }
   );
     
-  $el.find('a.dmdm-dropdown-toggle').each( function(){
+  $el.find('.dmdm-dropdown-toggle').each( function(){
     $(this).on('click', function(e){
       var $parent = $(this).offsetParent(".dropdown-menu");
       $(this).parent("li").toggleClass('open');
@@ -143,7 +143,7 @@ shinyDMDMenu=(function(){ // open object here
 
   var initializeSubMenu = function(pid, el){
     //.navbar is top level, a.dropdown-toggle are subsequent levels
-    $(el).parent("li").find('a.dmdm-dropdown-toggle').each( function(){
+    $(el).parent("li").find('.dmdm-dropdown-toggle').each( function(){
       $(this).on('click', function(e) {
         var $parent = $(this).offsetParent(".dropdown-menu");
         $(this).parent("li").toggleClass('open');
@@ -191,15 +191,17 @@ Shiny.addCustomMessageHandler('DMDMenu', function(data) {
     srchStr="#" + target;
   }
   if(type=='dropdown'){ //applies to rename, disable/enable
-    srchStr="a.dmdm-dropdown-toggle[value='" + target + "']";
+    srchStr="a.dmdm-dropdown-toggle[value='" + target + "']"+
+    ", span.dmdm-dropdown-toggle[value='" + target + "']";
   }
   if(type=='menuItem'){
     srchStr=".dmdMenuItem[value='" + target + "']";
   }
   
   if(type=='*'){
-    srchStr=".dmdMenuItem[value='" + target + "'], " +
-    "a.dmdm-dropdown-toggle[value='" + target + "']";
+    srchStr=".dmdMenuItem[value='" + target + "']" +
+    ", a.dmdm-dropdown-toggle[value='" + target + "']"+
+    ", span.dmdm-dropdown-toggle[value='" + target + "']";
   }
   
   if(target=='_'){ //kludge to add to top navbar (ignore type)

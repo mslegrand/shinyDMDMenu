@@ -13,6 +13,9 @@ library(shinythemes)
 
 
 shinyUI(fluidPage(
+  singleton( tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href ="custom.css" )
+  )),
   tags$head(
     tags$script('Shiny.addCustomMessageHandler("showClick",function(message) {alert(JSON.stringify(message));}); '),
     tags$style(HTML("div.well{padding-top:10px; padding-bottom:0;}")
@@ -25,7 +28,7 @@ shinyUI(fluidPage(
         "Dropdown 1",
         menuItem("menu 1-1"),
         menuItem("menu 1-2"),
-        menuDropdown("Dropdown 2",
+        subMenuDropdown("Dropdown 2",
                 menuItem("menu 2-1"),
                 menuItem("menu 2-2"),
                 menuItem("menu 2-3")

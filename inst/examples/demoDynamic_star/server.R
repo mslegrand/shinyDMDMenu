@@ -11,8 +11,8 @@ shinyServer(function(input, output, session) {
   
   customMenu<-reactiveValues( 
     childParent=data.frame(
-      child=c('menu 1-1','menu 1-2', 'menu 2', 'Dropdown 2', 'menu 2-1','menu 2-2', 'menu 2-3'),
-      parent=c('Dropdown 1','Dropdown 1', '_', 'Dropdown 1', 'Dropdown 2', 'Dropdown 2', 'Dropdown 2'), 
+      child=c('Dropdown 1','menu 1-1','menu 1-2', 'menu 2', 'Dropdown 2', 'menu 2-1','menu 2-2', 'menu 2-3'),
+      parent=c('_','Dropdown 1','Dropdown 1', '_', 'Dropdown 1', 'Dropdown 2', 'Dropdown 2', 'Dropdown 2'), 
       stringsAsFactors=FALSE
     ),
     disabled=c()
@@ -98,6 +98,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$appendToEvent,{
     dropdown<-trimws(input$droppdownTarget)
+    if(dropdown=='_'){ #don't append to nav bar, 
+      return
+    }
     label<-trimws(input$level1)
     if(nchar(dropdown)>0 && nchar(label)>0 && isOk(label)){
       kids<-input$level2
@@ -119,7 +122,7 @@ shinyServer(function(input, output, session) {
           entry=dropdown, 
           submenu=
             do.call(
-              function(...){ menuDropdown(label,...) },
+              function(...){ subMenuDropdown(label,...) },
               lapply(kids, menuItem)
             )
         )
@@ -158,26 +161,30 @@ shinyServer(function(input, output, session) {
           hasKids<-TRUE
         }
       }
-      if(hasKids){
-        lapply(kids, function(k)addChildParent(k,label))
-        insertFn(
-          session, 
-          menuBarId= menuBarId,  
-          entry=entry,
-          submenu=
-            do.call(
-              function(...){ menuDropdown(label,...) },
-              lapply(kids, menuItem)
-            )
-        )
+      if(!hasKids){
+        type="menuItem"
+        submenu=menuItem(label)
       } else {
-        insertFn(
-          session, 
-          menuBarId= menuBarId,  
-          entry=entry, 
-          submenu=menuItem(label)
-        )
-      }
+        lapply(kids, function(k)addChildParent(k,label))
+        if(parent!='_'){
+          submenu=do.call(
+            function(...){ subMenuDropdown(label,...) },
+            lapply(kids, menuItem)
+          )
+        } else {
+          submenu=do.call(
+            function(...){ menuDropdown(label,...) },
+            lapply(kids, menuItem)
+          )
+        }
+      } 
+      insertFn(
+        session, 
+        menuBarId= menuBarId,  
+        entry=entry, 
+        submenu=submenu
+      )
+      
       addChildParent(label,parent)
     }
     
